@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "355734057161",
+    "project_id": "c242-ps009-e2359",
+    "storage_bucket": "c242-ps009-e2359.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:355734057161:android:a3282d776572f798cddd18",
+        "android_client_info": {
+          "package_name": "com.c242_ps009.habitsaga"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYA0TixflSRKmkSN5V_gDdcH0uBTzl6C0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
