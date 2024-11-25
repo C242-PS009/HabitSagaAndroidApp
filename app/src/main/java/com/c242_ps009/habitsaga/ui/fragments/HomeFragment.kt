@@ -19,6 +19,12 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        binding.mascot.init(
+            "https://raw.githubusercontent.com/C242-PS009/assets/refs/heads/master/characters/orca/halo.svg",
+            "https://raw.githubusercontent.com/C242-PS009/assets/refs/heads/master/equippables/glasses/halo.svg",
+        )
+
         return binding.root
     }
 
