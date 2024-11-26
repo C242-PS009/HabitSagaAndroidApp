@@ -28,8 +28,8 @@
                 android:id="@+id/cv_profile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:color="#1DA0FE"
-                app:shadowColor="#266BC4">
+                app:color="@color/card_color"
+                app:shadowColor="@color/card_shadow">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -64,7 +64,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:progress="50"/>
+                        android:scaleY="3"
+                        android:progress="50" />
 
                 </LinearLayout>
 
@@ -89,8 +90,8 @@
         android:id="@+id/cv_report"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        app:color="#1DA0FE"
-        app:shadowColor="#266BC4">
+        app:color="@color/card_color"
+        app:shadowColor="@color/card_shadow">
 
     </com.c242_ps009.habitsaga.ui.views.Card3dView>
 
@@ -103,8 +104,8 @@
         android:id="@+id/cv_task"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        app:color="#1DA0FE"
-        app:shadowColor="#266BC4">
+        app:color="@color/card_color"
+        app:shadowColor="@color/card_shadow">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -145,8 +146,8 @@
         android:id="@+id/cv_pomodoro"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        app:color="#1DA0FE"
-        app:shadowColor="#266BC4">
+        app:color="@color/card_color"
+        app:shadowColor="@color/card_shadow">
 
         <LinearLayout
             android:layout_width="match_parent"

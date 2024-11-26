@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.c242_ps009.habitsaga.databinding.FragmentProfile2Binding
 import com.c242_ps009.habitsaga.databinding.FragmentProfileBinding
 import com.c242_ps009.habitsaga.ui.auth.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -14,7 +15,7 @@ import com.google.firebase.ktx.Firebase
 
 class ProfileFragment : Fragment() {
 
-    private var _binding: FragmentProfileBinding? = null
+    private var _binding: FragmentProfile2Binding? = null
     private val binding get() = _binding!!
     private val auth: FirebaseAuth by lazy { Firebase.auth }
 
@@ -22,7 +23,13 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        _binding = FragmentProfile2Binding.inflate(inflater, container, false)
+
+        binding.mascot.init(
+            "https://raw.githubusercontent.com/C242-PS009/assets/refs/heads/master/characters/orca/xd.svg",
+            "https://raw.githubusercontent.com/C242-PS009/assets/refs/heads/master/equippables/glasses/xd.svg",
+        )
+
         return binding.root
     }
 
