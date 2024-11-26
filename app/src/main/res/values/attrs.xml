@@ -4,4 +4,9 @@
         <attr name="color" format="color"/>
         <attr name="shadowColor" format="color"/>
     </declare-styleable>
+
+    <declare-styleable name="MascotView">
+        <attr name="layer1" format="string"/>
+        <attr name="layer2" format="string"/>
+    </declare-styleable>
 </resources>

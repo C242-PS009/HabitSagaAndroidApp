@@ -20,10 +20,12 @@ class HomeFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        binding.mascot.init(
-            "https://raw.githubusercontent.com/C242-PS009/assets/refs/heads/master/characters/orca/think.svg",
-            "https://raw.githubusercontent.com/C242-PS009/assets/refs/heads/master/equippables/glasses/think.svg",
-        )
+        binding.mascot.apply {
+            layer1 =
+                "https://raw.githubusercontent.com/C242-PS009/assets/refs/heads/master/characters/orca/think.svg"
+            layer2 =
+                "https://raw.githubusercontent.com/C242-PS009/assets/refs/heads/master/equippables/glasses/think.svg"
+        }
 
         return binding.root
     }
