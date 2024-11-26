@@ -8,13 +8,9 @@ import com.github.jimcoven.view.JCropImageView
 import com.github.jimcoven.view.JCropImageView.CropAlign
 import com.github.jimcoven.view.JCropImageView.CropType
 
-class MascotView : RelativeLayout {
-
-    constructor(context: Context) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context, attrs, defStyleAttr
-    )
+class MascotView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null
+) : RelativeLayout(context, attrs) {
 
     fun init(firstLayer: String, vararg layers: String) {
         removeAllViews()
