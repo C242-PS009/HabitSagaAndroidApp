@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="Card3dView">
-        <attr name="color" format="color"/>
-        <attr name="shadowColor" format="color"/>
+        <attr name="color" format="color" />
+        <attr name="shadowColor" format="color" />
+        <attr name="shadowHeight" format="dimension" />
+        <attr name="radius" format="dimension" />
+        <attr name="border" format="dimension" />
     </declare-styleable>
 
     <declare-styleable name="MascotView">
-        <attr name="layer1" format="string"/>
-        <attr name="layer2" format="string"/>
+        <attr name="layer1" format="string" />
+        <attr name="layer2" format="string" />
     </declare-styleable>
 </resources>
