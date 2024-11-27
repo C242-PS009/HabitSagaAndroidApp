@@ -35,11 +35,11 @@ class LoginActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        binding.tvRegister.setOnClickListener {
+        binding.llRegister.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
 
-        binding.btnLogin.setOnClickListener {
+        binding.cvLogin.setOnClickListener {
             val email = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
             if (email.isEmpty() || password.isEmpty()) {

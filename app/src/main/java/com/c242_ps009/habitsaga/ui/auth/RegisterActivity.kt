@@ -34,7 +34,7 @@ class RegisterActivity : AppCompatActivity() {
             insets
         }
 
-        binding.btnRegister.setOnClickListener {
+        binding.cvRegister.setOnClickListener {
             val email = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
             if (email.isEmpty() || password.isEmpty()) {

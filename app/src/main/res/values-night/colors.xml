@@ -3,4 +3,6 @@
     <color name="background">#FF142E7C</color>
     <color name="card_color">#FF2D5E9D</color>
     <color name="card_shadow">#FF274F83</color>
+    <color name="bg_card_color">#303030</color>
+    <color name="bg_card_shadow">#1B1B1B</color>
 </resources>
