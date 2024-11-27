@@ -7,7 +7,9 @@ import android.graphics.Paint
 import android.graphics.PixelFormat
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.widget.FrameLayout
+import androidx.core.view.postDelayed
 import androidx.core.view.updatePadding
 import com.c242_ps009.habitsaga.R
 
@@ -22,6 +24,11 @@ class Card3dView @JvmOverloads constructor(
     private val paint: Paint
     private val shadowPaint: Paint
     private val borderPaint: Paint
+
+    private val actualPaddingTop: Int
+    private val actualPaddingBottom: Int
+
+    private var down = false
 
     init {
         val attr = context.obtainStyledAttributes(attrs, R.styleable.Card3dView)
@@ -44,29 +51,61 @@ class Card3dView @JvmOverloads constructor(
             strokeWidth = border
         }
 
-        val s = shadow.toInt()
+        actualPaddingTop = paddingTop
+        actualPaddingBottom = paddingBottom
+
         val b = border.toInt()
-        updatePadding(paddingLeft + b, paddingTop + b, paddingRight + b, paddingBottom + s + b)
+        updatePadding(left = paddingLeft + b, right = paddingRight + b)
+        setDown(false)
 
         attr.recycle()
         background = Background()
+
+        setOnTouchListener r@{ v, event ->
+            if (!hasOnClickListeners()) return@r false
+
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                setDown(true)
+            } else if (event.action == MotionEvent.ACTION_UP) {
+                setDown(false)
+                v.performClick()
+            }
+            return@r true
+        }
+    }
+
+    private fun setDown(down: Boolean) {
+        this.down = down
+
+        val s = shadow.toInt()
+        val b = border.toInt()
+        if (down) {
+            updatePadding(top = actualPaddingTop + s + b, bottom = actualPaddingBottom + b)
+        } else {
+            updatePadding(top = actualPaddingTop + b, bottom = actualPaddingBottom + s + b)
+        }
     }
 
     inner class Background : Drawable() {
 
         override fun draw(canvas: Canvas) {
-            val sh = shadow
-            val r = radius
             val w = width.toFloat()
             val h = height.toFloat()
 
-            canvas.drawRoundRect(0f, 0f, w, h, r, r, shadowPaint)
+            val l = border / 2
+            var t = l
+            val r = w - l
+            var b = h - t
 
-            val b = border / 2
-            val br = w - b
-            val bb = h - sh - b
-            canvas.drawRoundRect(b, b, br, bb, r, r, paint)
-            canvas.drawRoundRect(b, b, br, bb, r, r, borderPaint)
+            if (down) {
+                t += shadow
+            } else {
+                canvas.drawRoundRect(0f, 0f, w, h, radius, radius, shadowPaint)
+                b -= shadow
+            }
+
+            canvas.drawRoundRect(l, t, r, b, radius, radius, paint)
+            canvas.drawRoundRect(l, t, r, b, radius, radius, borderPaint)
         }
 
         override fun setAlpha(alpha: Int) {

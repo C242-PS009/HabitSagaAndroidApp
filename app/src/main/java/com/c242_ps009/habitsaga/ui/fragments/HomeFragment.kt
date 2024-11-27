@@ -1,6 +1,7 @@
 package com.c242_ps009.habitsaga.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +26,10 @@ class HomeFragment : Fragment() {
                 "https://raw.githubusercontent.com/C242-PS009/assets/refs/heads/master/characters/orca/think.svg"
             layer2 =
                 "https://raw.githubusercontent.com/C242-PS009/assets/refs/heads/master/equippables/glasses/think.svg"
+        }
+
+        binding.cvPomodoro.setOnClickListener {
+            Log.i("HomeFragment", "Profile clicked")
         }
 
         return binding.root
