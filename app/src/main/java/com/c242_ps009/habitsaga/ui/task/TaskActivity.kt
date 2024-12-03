@@ -7,12 +7,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.c242_ps009.habitsaga.databinding.ActivityTaskBinding
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.firestore.ListenerRegistration
 
 class TaskActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTaskBinding
     private val taskViewModel: TaskViewModel by viewModels()
     private lateinit var taskAdapter: TaskAdapter
+    private var listenerRegistration: ListenerRegistration? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,8 +50,13 @@ class TaskActivity : AppCompatActivity() {
         }
     }
 
+    /*
+        You know, Firestore handles the removal under the hood... but hey, I’m just here
+        to make sure it's removed manually too, because memory leaks are a big no-no,
+        and who doesn't love being extra cautious? Better safe than sorry!
+    */
     override fun onDestroy() {
         super.onDestroy()
-        taskViewModel.listenerRegistration?.remove()
+        listenerRegistration?.let { TaskRepository().removeListener(it) }
     }
 }

@@ -30,13 +30,15 @@ class TaskViewModel : ViewModel() {
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
 
-    internal var listenerRegistration: ListenerRegistration? = null
+    private var listenerRegistration: ListenerRegistration? = null
 
     init {
         startRealTimeUpdates()
     }
 
+    // Add a task to Firestore, what do you expect?
     fun addNewTask(id: String, title: String, description: String, dueDate: String, category: String, isCompleted: Boolean, priority: Int) {
+        _loading.value = true
         viewModelScope.launch {
             val parsedDueDate = parseDate(dueDate)
             val task = Task(
@@ -52,17 +54,16 @@ class TaskViewModel : ViewModel() {
             val result = taskRepository.addTask(task)
             _taskSaveStatus.value = result
 
-            if (result.isSuccess) {
-                // Real-time listener will handle the update, i hope so
-            } else {
+            if (result.isFailure) {
                 _error.value = "Error adding task: ${result.exceptionOrNull()?.message}"
             }
+            _loading.value = false
         }
     }
 
-    // Real-time updates from Firestore, fetch tasks in a nutshell
+    // Real-time updates from Firestore, fetch/read tasks in a nutshell
     private fun startRealTimeUpdates() {
-        listenerRegistration = taskRepository.observeTask(
+        listenerRegistration = taskRepository.startListener(
             onTasksUpdated = { tasks ->
                 tasksLiveData.value = tasks
             },
@@ -72,6 +73,7 @@ class TaskViewModel : ViewModel() {
         )
     }
 
+    // Update a task in Firestore, what do you expect?
     fun updateTask(documentId: String, updatedTask: Task) {
         _loading.value = true
         viewModelScope.launch {
@@ -79,9 +81,7 @@ class TaskViewModel : ViewModel() {
                 val result = taskRepository.updateTask(documentId, updatedTask)
                 _taskUpdateStatus.value = result
 
-                if (result.isSuccess) {
-                    // Real-time listener will handle the update, i hope so
-                } else {
+                if (result.isFailure) {
                     _error.value = "Error updating task: ${result.exceptionOrNull()?.message}"
                 }
             } catch (e: Exception) {
@@ -92,6 +92,7 @@ class TaskViewModel : ViewModel() {
         }
     }
 
+    // Delete a task in Firestore, what do you expect?
     fun deleteTask(documentId: String) {
         _loading.value = true
         viewModelScope.launch {
@@ -101,8 +102,6 @@ class TaskViewModel : ViewModel() {
 
                 if (result.isFailure) {
                     _error.value = "Error deleting task: ${result.exceptionOrNull()?.message}"
-                } else {
-                    // Real-time listener will handle the deletion or something else, i hope so
                 }
             } catch (e: Exception) {
                 _error.value = "Error deleting task: ${e.message}"
@@ -112,6 +111,11 @@ class TaskViewModel : ViewModel() {
         }
     }
 
+    /*
+       You know, Firestore handles the removal under the hood... but hey, I’m just here
+       to make sure it's removed manually too, because memory leaks are a big no-no,
+       and who doesn't love being extra cautious? Better safe than sorry!
+    */
     override fun onCleared() {
         super.onCleared()
         listenerRegistration?.remove()
@@ -119,8 +123,9 @@ class TaskViewModel : ViewModel() {
 
     private fun parseDate(dateString: String): Date? {
         return try {
-            val dateFormat = java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale.US)
-            dateFormat.timeZone = java.util.TimeZone.getTimeZone("UTC")
+            val dateFormat = java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale.US).apply {
+                timeZone = java.util.TimeZone.getTimeZone("UTC")
+            }
             dateFormat.parse(dateString)
         } catch (e: Exception) {
             Log.e("TaskViewModel", "Error parsing date: ${e.message}")

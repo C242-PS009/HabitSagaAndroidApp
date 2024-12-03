@@ -9,79 +9,88 @@ import kotlinx.coroutines.tasks.await
 class TaskRepository {
 
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
-    private val tasksCollection: CollectionReference = firestore.collection("eisenhower_tasks")
+    private val tasksCollection: CollectionReference = firestore.collection(TASKS_COLLECTION)
 
+    companion object {
+        private const val TASKS_COLLECTION = "eisenhower_tasks"
+        private const val TAG = "TaskRepository"
+    }
+
+    // Add a task to Firestore, what do you expect?
     suspend fun addTask(task: Task): Result<String> {
         return try {
-            val taskMap = hashMapOf(
-                "userId" to task.userId,
-                "id" to task.id,
-                "title" to task.title,
-                "description" to task.description,
-                "dueDate" to task.dueDate,
-                "category" to task.category,
-                "isCompleted" to task.isCompleted,
-                "priority" to task.priority
-            )
+            val taskMap = Task(
+                userId = task.userId,
+                title = task.title,
+                description = task.description,
+                dueDate = task.dueDate,
+                category = task.category,
+                isCompleted = task.isCompleted,
+                priority = task.priority
+            ).toMap()
             val documentReference = tasksCollection.add(taskMap).await()
             Result.success(documentReference.id)
         } catch (e: Exception) {
-            Log.e("TaskRepository", "Error adding task", e)
+            Log.e(TAG, "Error adding task: ${task.title}", e)
             Result.failure(e)
         }
     }
 
+    // Update a task in Firestore, what do you expect?
     suspend fun updateTask(documentId: String, updatedTask: Task): Result<Unit> {
         return try {
-            val taskMap = hashMapOf(
-                "title" to updatedTask.title,
-                "description" to updatedTask.description,
-                "dueDate" to updatedTask.dueDate,
-                "category" to updatedTask.category,
-                "isCompleted" to updatedTask.isCompleted,
-                "priority" to updatedTask.priority
-            ) as Map<String, Any>
-            val documentReference = tasksCollection.document(documentId)
-            documentReference.update(taskMap).await()
+            val taskMap = Task(
+                userId = updatedTask.userId,
+                title = updatedTask.title,
+                description = updatedTask.description,
+                dueDate = updatedTask.dueDate,
+                category = updatedTask.category,
+                isCompleted = updatedTask.isCompleted,
+                priority = updatedTask.priority
+            ).toMap()
+            tasksCollection.document(documentId).update(taskMap).await()
             Result.success(Unit)
         } catch (e: Exception) {
-            Log.e("TaskRepository", "Error updating task", e)
+            Log.e(TAG, "Error updating task: ${updatedTask.title}", e)
             Result.failure(e)
         }
     }
 
+    // Delete a task in Firestore, what do you expect?
     suspend fun deleteTask(documentId: String): Result<Unit> {
         return try {
-            val documentReference = tasksCollection.document(documentId)
-            documentReference.delete().await()
+            tasksCollection.document(documentId).delete().await()
             Result.success(Unit)
         } catch (e: Exception) {
-            Log.e("TaskRepository", "Error deleting task", e)
+            Log.e(TAG, "Error deleting task with ID: $documentId", e)
             Result.failure(e)
         }
     }
 
-    fun observeTask(onTasksUpdated: (List<Task>) -> Unit, onError: (Exception) -> Unit): ListenerRegistration {
+    // Real-time updates from Firestore, fetch/read tasks in a nutshell
+    fun startListener(onTasksUpdated: (List<Task>) -> Unit, onError: (Exception) -> Unit): ListenerRegistration {
         return tasksCollection.addSnapshotListener { snapshot, exception ->
             if (exception != null) {
                 onError(exception)
                 return@addSnapshotListener
             }
 
-            val tasks = mutableListOf<Task>()
-            snapshot?.documents?.forEach { document ->
-                val task = document.toObject(Task::class.java)
-                task?.let {
-                    it.id = document.id
-                    tasks.add(it)
-                } ?: Log.w("TaskRepository", "Document could not be mapped to Task")
-            }
+            val tasks = snapshot?.documents?.mapNotNull { document ->
+                document.toObject(Task::class.java)?.apply {
+                    id = document.id
+                }
+            } ?: emptyList()
 
             onTasksUpdated(tasks)
         }
     }
 
-    fun stopObserver(listenerRegistration: ListenerRegistration) {
+    /*
+        You know, Firestore handles the removal under the hood... but hey, I’m just here
+        to make sure it's removed manually too, because memory leaks are a big no-no,
+        and who doesn't love being extra cautious? Better safe than sorry!
+    */
+    fun removeListener(listenerRegistration: ListenerRegistration) {
         listenerRegistration.remove()
     }
 }
