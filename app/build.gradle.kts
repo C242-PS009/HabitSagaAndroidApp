@@ -11,6 +11,7 @@ android {
     defaultConfig {
         applicationId = "com.c242_ps009.habitsaga"
         minSdk = 24
+        //noinspection OldTargetApi
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -51,6 +52,7 @@ dependencies {
     implementation(libs.coil.network.okhttp)
     implementation(libs.coil.svg)
     implementation(libs.jcropimageview) { isTransitive = false }
+    implementation(libs.firebase.firestore)
 
     testImplementation(libs.junit)
 

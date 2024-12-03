@@ -5,4 +5,5 @@
     <string name="home">Home</string>
     <string name="stats">Statistics</string>
     <string name="profile">Profile</string>
+    <string name="add_task">Add Task...</string>
 </resources>

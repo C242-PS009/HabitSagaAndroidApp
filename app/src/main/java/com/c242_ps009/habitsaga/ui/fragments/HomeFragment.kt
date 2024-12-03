@@ -1,5 +1,6 @@
 package com.c242_ps009.habitsaga.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.c242_ps009.habitsaga.databinding.FragmentHomeBinding
+import com.c242_ps009.habitsaga.ui.task.TaskActivity
 
 
 class HomeFragment : Fragment() {
@@ -28,8 +30,14 @@ class HomeFragment : Fragment() {
                 "https://raw.githubusercontent.com/C242-PS009/assets/refs/heads/master/equippables/glasses/think.svg"
         }
 
-        binding.cvPomodoro.setOnClickListener {
-            Log.i("HomeFragment", "Profile clicked")
+        binding.apply {
+            cvTask.setOnClickListener {
+                val intent = Intent(context, TaskActivity::class.java)
+                startActivity(intent)
+            }
+            cvPomodoro.setOnClickListener {
+                Log.i("HomeFragment", "Profile clicked")
+            }
         }
 
         return binding.root
