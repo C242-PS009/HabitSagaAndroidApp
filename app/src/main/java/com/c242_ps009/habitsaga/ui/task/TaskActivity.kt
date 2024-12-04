@@ -14,7 +14,6 @@ class TaskActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTaskBinding
     private val taskViewModel: TaskViewModel by viewModels()
     private lateinit var taskAdapter: TaskAdapter
-    private var listenerRegistration: ListenerRegistration? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,11 +26,7 @@ class TaskActivity : AppCompatActivity() {
         binding.rvTasks.adapter = taskAdapter
 
         taskViewModel.tasksLiveData.observe(this) { tasks ->
-            if (tasks.isNullOrEmpty()) {
-                Snackbar.make(binding.root, "No tasks found", Snackbar.LENGTH_SHORT).show()
-            } else {
-                taskAdapter.submitList(tasks)
-            }
+            taskAdapter.submitList(tasks)
         }
 
         taskViewModel.loading.observe(this) { isLoading ->
@@ -48,15 +43,5 @@ class TaskActivity : AppCompatActivity() {
             val intent = Intent(this, AddTaskActivity::class.java)
             startActivity(intent)
         }
-    }
-
-    /*
-        You know, Firestore handles the removal under the hood... but hey, I’m just here
-        to make sure it's removed manually too, because memory leaks are a big no-no,
-        and who doesn't love being extra cautious? Better safe than sorry!
-    */
-    override fun onDestroy() {
-        super.onDestroy()
-        listenerRegistration?.let { TaskRepository().removeListener(it) }
     }
 }

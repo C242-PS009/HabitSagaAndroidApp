@@ -26,7 +26,8 @@ class TaskRepository {
                 dueDate = task.dueDate,
                 category = task.category,
                 isCompleted = task.isCompleted,
-                priority = task.priority
+                priority = task.priority,
+                deleted = task.deleted
             ).toMap()
             val documentReference = tasksCollection.add(taskMap).await()
             Result.success(documentReference.id)
@@ -59,7 +60,7 @@ class TaskRepository {
     // Delete a task in Firestore, what do you expect?
     suspend fun deleteTask(documentId: String): Result<Unit> {
         return try {
-            tasksCollection.document(documentId).delete().await()
+            tasksCollection.document(documentId).update("deleted", true).await()
             Result.success(Unit)
         } catch (e: Exception) {
             Log.e(TAG, "Error deleting task with ID: $documentId", e)
@@ -79,18 +80,9 @@ class TaskRepository {
                 document.toObject(Task::class.java)?.apply {
                     id = document.id
                 }
-            } ?: emptyList()
+            }?.filter { !it.deleted } ?: emptyList()
 
             onTasksUpdated(tasks)
         }
-    }
-
-    /*
-        You know, Firestore handles the removal under the hood... but hey, I’m just here
-        to make sure it's removed manually too, because memory leaks are a big no-no,
-        and who doesn't love being extra cautious? Better safe than sorry!
-    */
-    fun removeListener(listenerRegistration: ListenerRegistration) {
-        listenerRegistration.remove()
     }
 }

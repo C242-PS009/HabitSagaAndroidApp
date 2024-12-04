@@ -65,7 +65,7 @@ class TaskViewModel : ViewModel() {
     private fun startRealTimeUpdates() {
         listenerRegistration = taskRepository.startListener(
             onTasksUpdated = { tasks ->
-                tasksLiveData.value = tasks
+                tasksLiveData.value = tasks.filter { !it.deleted }
             },
             onError = { exception ->
                 _error.value = "Error receiving real-time updates: ${exception.message}"
@@ -100,7 +100,9 @@ class TaskViewModel : ViewModel() {
                 val result = taskRepository.deleteTask(documentId)
                 _taskDeleteStatus.value = result
 
-                if (result.isFailure) {
+                if (result.isSuccess) {
+                    tasksLiveData.value = tasksLiveData.value?.filter { it.id != documentId }
+                } else {
                     _error.value = "Error deleting task: ${result.exceptionOrNull()?.message}"
                 }
             } catch (e: Exception) {
