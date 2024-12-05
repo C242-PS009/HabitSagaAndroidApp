@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -10,7 +10,7 @@
     tools:context=".ui.activities.MainActivity">
 
     <LinearLayout
-        android:layout_width="400dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
@@ -32,8 +32,10 @@
                 android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_username"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="16dp"
                     app:cardBackgroundColor="#50000000"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="0dp"
@@ -43,24 +45,21 @@
                     app:contentPaddingTop="5dp">
 
                     <TextView
-                        android:id="@+id/tv_user"
+                        android:id="@+id/tv_username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/league_spartan_bold"
-                        android:text="Username"
+                        android:text="Loading..."
                         android:textColor="@color/white"
-                        android:textSize="30sp" />
+                        android:textSize="20sp" />
 
                 </androidx.cardview.widget.CardView>
 
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
-
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_level"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="16dp"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="0dp"
@@ -74,7 +73,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/league_spartan_medium"
-                        android:text="Lv. 1"
+                        android:text="Lv. "
                         android:textColor="@color/black"
                         android:textSize="20sp" />
 
@@ -83,41 +82,41 @@
             </LinearLayout>
 
             <ProgressBar
-                android:id="@+id/progressBar2"
+                android:id="@+id/pb_level"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:progress="50"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:progress="0"
                 android:scaleY="3" />
 
             <TextView
-                android:id="@+id/tv_exp"
+                android:id="@+id/tv_expProgress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
                 android:fontFamily="@font/league_spartan_medium"
-                android:text="69/420"
+                android:text="0/100"
                 android:textAlignment="textEnd"
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/tv_money"
+                android:id="@+id/tv_coin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
                 android:drawablePadding="5dp"
                 android:fontFamily="@font/league_spartan_medium"
                 android:text="420.000"
                 android:textAlignment="textEnd"
                 android:textColor="#F8B324"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:drawableRightCompat="@drawable/ic_coin" />
 
         </LinearLayout>
-
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="30dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -134,6 +133,9 @@
                     android:id="@+id/cv_custom"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="16dp"
                     android:padding="10dp"
                     app:color="@color/card_color"
                     app:shadowColor="@color/card_shadow">
@@ -145,19 +147,18 @@
                         android:gravity="center_vertical"
                         android:text="Customize"
                         android:textColor="@color/white"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         app:drawableRightCompat="@drawable/ic_settings" />
 
                 </com.c242_ps009.habitsaga.ui.views.Card3dView>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp" />
 
                 <com.c242_ps009.habitsaga.ui.views.Card3dView
                     android:id="@+id/cv_shop"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="16dp"
                     android:padding="10dp"
                     app:color="@color/card_color"
                     app:shadowColor="@color/card_shadow">
@@ -169,20 +170,19 @@
                         android:gravity="center_vertical"
                         android:text="Shop"
                         android:textColor="@color/white"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         app:drawableRightCompat="@drawable/ic_shop" />
 
 
                 </com.c242_ps009.habitsaga.ui.views.Card3dView>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp" />
-
                 <com.c242_ps009.habitsaga.ui.views.Card3dView
                     android:id="@+id/cv_settings"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="16dp"
                     android:padding="10dp"
                     app:color="@color/card_color"
                     app:shadowColor="@color/card_shadow">
@@ -194,17 +194,13 @@
                         android:gravity="center_vertical"
                         android:text="Settings"
                         android:textColor="@color/white"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         app:drawableRightCompat="@drawable/ic_settings" />
 
 
                 </com.c242_ps009.habitsaga.ui.views.Card3dView>
 
             </LinearLayout>
-
-            <Space
-                android:layout_width="30dp"
-                android:layout_height="match_parent" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
