@@ -85,4 +85,14 @@ class TaskRepository {
             onTasksUpdated(tasks)
         }
     }
+
+    suspend fun completedTask(documentId: String): Result<Unit> {
+        return try {
+            tasksCollection.document(documentId).update("isCompleted", true).await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error marking task as completed with ID: $documentId", e)
+            Result.failure(e)
+        }
+    }
 }

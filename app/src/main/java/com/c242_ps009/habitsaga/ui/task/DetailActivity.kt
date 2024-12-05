@@ -6,10 +6,13 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.c242_ps009.habitsaga.databinding.ActivityDetailBinding
 import com.c242_ps009.habitsaga.ui.utils.DatePickerUtil
+import kotlinx.coroutines.launch
 import java.util.Date
 
 class DetailActivity : AppCompatActivity() {
@@ -21,8 +24,13 @@ class DetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        enableEdgeToEdge()
+
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val id = intent.getStringExtra("documentId")
         val taskTitle = intent.getStringExtra("taskTitle") ?: "No Title"
@@ -30,7 +38,6 @@ class DetailActivity : AppCompatActivity() {
         val taskDueDate = intent.getStringExtra("taskDueDate") ?: "No Due Date"
         val taskCategory = intent.getStringExtra("taskCategory") ?: "No Category"
 
-        binding.tvTaskTitle.text = taskTitle
         binding.etTaskTitle.text = Editable.Factory.getInstance().newEditable(taskTitle)
         binding.etTaskDescription.text = Editable.Factory.getInstance().newEditable(taskDescription)
         binding.tvTaskDueDate.text = taskDueDate
@@ -55,6 +62,16 @@ class DetailActivity : AppCompatActivity() {
                 finish()
             }
 
+            btnDone.setOnClickListener {
+                id?.let {
+                    lifecycleScope.launch {
+                        taskViewModel.markTaskCompleted(it)
+                        finish()
+                    }
+                }
+            }
+
+
             btnEdit.setOnClickListener {
                 val updatedTitle = etTaskTitle.text.toString().trim()
                 val updatedDescription = etTaskDescription.text.toString().trim()
@@ -73,6 +90,11 @@ class DetailActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
     private fun parseDate(dateString: String): Date? {

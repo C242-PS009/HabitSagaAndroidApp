@@ -113,6 +113,15 @@ class TaskViewModel : ViewModel() {
         }
     }
 
+    suspend fun markTaskCompleted(taskId: String) {
+        val result = taskRepository.completedTask(taskId)
+        result.onSuccess {
+            Log.d("TaskRepository", "Task marked as completed")
+        }.onFailure { exception ->
+            Log.e("TaskRepository", "Error marking task as completed", exception)
+        }
+    }
+
     /*
        You know, Firestore handles the removal under the hood... but hey, I’m just here
        to make sure it's removed manually too, because memory leaks are a big no-no,

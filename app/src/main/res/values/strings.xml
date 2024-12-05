@@ -6,4 +6,8 @@
     <string name="stats">Statistics</string>
     <string name="profile">Profile</string>
     <string name="add_task">Add Task...</string>
+    <string name="failed_to_load_data">Failed to Load Data</string>
+    <string name="completed">Completed\n</string>
+    <string name="incomplete">Incomplete\n</string>
+    <string name="tasks">Tasks\n</string>
 </resources>

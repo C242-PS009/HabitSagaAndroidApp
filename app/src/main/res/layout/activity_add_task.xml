@@ -8,19 +8,17 @@
     android:layout_height="match_parent"
     tools:context=".ui.task.AddTaskActivity">
 
-    <TextView
-        android:id="@+id/tv_taskTitle"
-        android:layout_width="0dp"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:text="Task Title"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        android:background="@android:color/transparent"
+        android:layout_marginTop="28dp"
+        android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="Add Task"/>
 
     <ImageView
         android:id="@+id/ic_delete"
@@ -28,19 +26,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:src="@drawable/ic_delete"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_taskTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_taskTitle" />
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:layout_marginTop="8dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_taskTitle" />
+        app:layout_constraintTop_toTopOf="@+id/et_title" />
 
     <EditText
         android:id="@+id/et_title"
@@ -53,7 +41,7 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/divider" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <EditText
         android:id="@+id/et_date"

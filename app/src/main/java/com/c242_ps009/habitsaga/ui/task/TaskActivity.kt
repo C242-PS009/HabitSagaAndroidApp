@@ -2,12 +2,12 @@ package com.c242_ps009.habitsaga.ui.task
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.c242_ps009.habitsaga.databinding.ActivityTaskBinding
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.firestore.ListenerRegistration
 
 class TaskActivity : AppCompatActivity() {
 
@@ -20,6 +20,10 @@ class TaskActivity : AppCompatActivity() {
 
         binding = ActivityTaskBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        enableEdgeToEdge()
+
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         binding.rvTasks.layoutManager = LinearLayoutManager(this)
         taskAdapter = TaskAdapter()
@@ -43,5 +47,10 @@ class TaskActivity : AppCompatActivity() {
             val intent = Intent(this, AddTaskActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }
