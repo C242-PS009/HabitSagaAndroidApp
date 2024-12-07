@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 object DatePickerUtil {
-    private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    // private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
     fun showDatePickerDialog(context: Context, editText: TextView, onDateSelected: (String) -> Unit) {
         val calendar = Calendar.getInstance()
@@ -24,8 +24,9 @@ object DatePickerUtil {
                     set(Calendar.DAY_OF_MONTH, selectedDay)
                 }.time
 
+                val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                 val formattedDate = dateFormat.format(selectedDate)
-                editText.setText(formattedDate)
+                editText.text = formattedDate
 
                 onDateSelected(formattedDate)
             },
