@@ -10,7 +10,7 @@ import com.c242_ps009.habitsaga.databinding.ItemTaskBinding
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class TaskAdapter : ListAdapter<Task, TaskAdapter.TaskViewHolder>(TaskDiffCallback()) {
+class TaskAdapter : ListAdapter<TaskAdapter.Entry, TaskAdapter.TaskViewHolder>(TaskDiffCallback()) {
 
     private val selectedTasks = mutableSetOf<Task>()
 
@@ -26,13 +26,17 @@ class TaskAdapter : ListAdapter<Task, TaskAdapter.TaskViewHolder>(TaskDiffCallba
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        val task = getItem(position)
-        holder.bind(task) { clickedTask, isChecked ->
-            if (isChecked) {
-                selectedTasks.add(clickedTask)
-            } else {
-                selectedTasks.remove(clickedTask)
+        val entry = getItem(position)
+        if (entry is TaskEntry) {
+            holder.bind(entry.task) { clickedTask, isChecked ->
+                if (isChecked) {
+                    selectedTasks.add(clickedTask)
+                } else {
+                    selectedTasks.remove(clickedTask)
+                }
             }
+        } else if (entry is CategoryEntry) {
+            TODO("BIND CATEGORY")
         }
     }
 
@@ -61,13 +65,23 @@ class TaskAdapter : ListAdapter<Task, TaskAdapter.TaskViewHolder>(TaskDiffCallba
         }
     }
 
-    class TaskDiffCallback : DiffUtil.ItemCallback<Task>() {
-        override fun areItemsTheSame(oldItem: Task, newItem: Task): Boolean {
-            return oldItem.id == newItem.id
+    class TaskDiffCallback : DiffUtil.ItemCallback<Entry>() {
+        override fun areItemsTheSame(oldItem: Entry, newItem: Entry): Boolean {
+            if (oldItem is TaskEntry && newItem is TaskEntry) {
+                return oldItem.task.id == newItem.task.id
+            } else if (oldItem is CategoryEntry && newItem is CategoryEntry) {
+                return oldItem.category == newItem.category
+            }
+
+            return false
         }
 
-        override fun areContentsTheSame(oldItem: Task, newItem: Task): Boolean {
+        override fun areContentsTheSame(oldItem: Entry, newItem: Entry): Boolean {
             return oldItem == newItem
         }
     }
+
+    sealed interface Entry
+    data class TaskEntry(val task: Task) : Entry
+    data class CategoryEntry(val category: String) : Entry
 }

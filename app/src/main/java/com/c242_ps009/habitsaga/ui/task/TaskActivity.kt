@@ -39,7 +39,7 @@ class TaskActivity : AppCompatActivity() {
         binding.rvTasks.adapter = taskAdapter
 
         taskViewModel.tasksLiveData.observe(this) { tasks ->
-            taskAdapter.submitList(tasks)
+            taskAdapter.submitList(tasks?.map { TaskAdapter.TaskEntry(it) })
         }
 
         taskViewModel.loading.observe(this) { isLoading ->
