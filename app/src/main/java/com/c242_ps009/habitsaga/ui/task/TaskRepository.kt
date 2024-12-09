@@ -1,10 +1,20 @@
 package com.c242_ps009.habitsaga.ui.task
 
 import android.util.Log
+import com.c242_ps009.habitsaga.data.retrofit.ApiConfig
+import com.c242_ps009.habitsaga.data.retrofit.TaskRequest
+import com.c242_ps009.habitsaga.data.retrofit.TaskResponse
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.ListenerRegistration
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class TaskRepository {
 
@@ -95,6 +105,62 @@ class TaskRepository {
                 }
             }?.filter { !it.deleted } ?: emptyList()
             onTasksUpdated(tasks)
+        }
+    }
+
+    suspend fun getTasksByTitle(title: String): Result<List<Task>> {
+        return try {
+            val tasks = tasksCollection
+                .whereEqualTo("title", title)
+                .whereEqualTo("isCompleted", false)
+                .get()
+                .await()
+            val taskList = tasks.documents.mapNotNull { document ->
+                document.toObject(Task::class.java)?.apply {
+                    id = document.id
+                }
+            }
+            Result.success(taskList)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error fetching tasks with title: $title", e)
+            Result.failure(e)
+        }
+    }
+
+    fun fetchTitlesAndPredict() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val result = getTasksByTitle("title")
+            withContext(Dispatchers.Main) {
+                result.onSuccess { titles ->
+                    if (titles.isNotEmpty()) {
+                        val request = TaskRequest(tasks = titles)
+
+                        ApiConfig.apiService().getTaskPriorities(request).enqueue(object : Callback<TaskResponse> {
+                            override fun onResponse(
+                                call: Call<TaskResponse>,
+                                response: Response<TaskResponse>
+                            ) {
+                                if (response.isSuccessful) {
+                                    val labels = response.body()?.labels
+                                    labels?.let {
+                                        Log.d("MLPrediction", "Predictions: $it")
+                                    }
+                                } else {
+                                    Log.e("MLPrediction", "API Error: ${response.code()}")
+                                }
+                            }
+
+                            override fun onFailure(call: Call<TaskResponse>, t: Throwable) {
+                                Log.e("MLPrediction", "API Failure: ${t.message}")
+                            }
+                        })
+                    } else {
+                        Log.d("Firestore", "No titles found in Firestore.")
+                    }
+                }.onFailure { exception ->
+                    Log.e("Firestore", "Error fetching titles: ", exception)
+                }
+            }
         }
     }
 

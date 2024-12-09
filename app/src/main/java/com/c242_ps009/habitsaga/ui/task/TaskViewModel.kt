@@ -39,6 +39,12 @@ class TaskViewModel : ViewModel() {
         startRealTimeUpdates()
     }
 
+    fun fetchTitlesAndPredict() {
+        viewModelScope.launch {
+            taskRepository.fetchTitlesAndPredict()
+        }
+    }
+
     // Add a task to Firestore, what do you expect?
     fun addNewTask(id: String, title: String, description: String, dueDate: String, category: String, priority: String, isCompleted: Boolean) {
         _loading.value = true
