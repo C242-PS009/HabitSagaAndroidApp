@@ -68,6 +68,19 @@ class TaskRepository {
         }
     }
 
+    suspend fun deleteAllTasks(): Result<Unit> {
+        return try {
+            val tasks = tasksCollection.get().await()
+            for (document in tasks.documents) {
+                tasksCollection.document(document.id).delete().await()
+            }
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error deleting all tasks", e)
+            Result.failure(e)
+        }
+    }
+
     // Real-time updates from Firestore, fetch/read tasks in a nutshell
     fun startListener(onTasksUpdated: (List<Task>) -> Unit, onError: (Exception) -> Unit): ListenerRegistration {
         return tasksCollection.addSnapshotListener { snapshot, exception ->
@@ -81,7 +94,6 @@ class TaskRepository {
                     id = document.id
                 }
             }?.filter { !it.deleted } ?: emptyList()
-
             onTasksUpdated(tasks)
         }
     }

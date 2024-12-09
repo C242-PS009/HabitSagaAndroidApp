@@ -5,9 +5,11 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.c242_ps009.habitsaga.databinding.ActivityTaskBinding
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
 
 class TaskActivity : AppCompatActivity() {
 
@@ -46,6 +48,29 @@ class TaskActivity : AppCompatActivity() {
         binding.cvAddTask.setOnClickListener {
             val intent = Intent(this, AddTaskActivity::class.java)
             startActivity(intent)
+        }
+
+//        binding.btnDelete.setOnClickListener {
+//            taskViewModel.deleteAllTasks()
+//        }
+
+        binding.btnDone.setOnClickListener {
+            val selectedTasks = taskAdapter.getSelectedTasks()
+            if (selectedTasks.isNotEmpty()) {
+                markTasksAsDone(selectedTasks)
+            } else {
+                Snackbar.make(binding.root, "No tasks selected", Snackbar.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun markTasksAsDone(tasks: Set<Task>) {
+        lifecycleScope.launch {
+            tasks.forEach { task ->
+                task.isCompleted = true
+                taskViewModel.markTaskCompleted(task.id)
+            }
+            taskAdapter.clearSelection()
         }
     }
 

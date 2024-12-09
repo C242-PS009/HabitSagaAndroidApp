@@ -20,16 +20,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:title="Add Task"/>
 
-    <ImageView
-        android:id="@+id/ic_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:src="@drawable/ic_delete"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/et_title" />
-
     <EditText
         android:id="@+id/et_title"
         android:layout_width="0dp"
@@ -49,25 +39,69 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
         android:text="Due Date"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/spin_category"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_title" />
 
-    <androidx.appcompat.widget.AppCompatSpinner
-        android:id="@+id/spin_category"
+    <ImageView
+        android:id="@+id/ic_calendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_calendar"
+        app:layout_constraintBottom_toBottomOf="@+id/et_date"
+        app:layout_constraintStart_toEndOf="@id/et_date"
+        app:layout_constraintTop_toBottomOf="@id/et_title" />
+
+    <EditText
+        android:id="@+id/et_category"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:hint="Enter task description"
+        android:hint="Enter task category"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_date" />
+        app:layout_constraintTop_toBottomOf="@+id/rg_priority" />
+
+    <RadioGroup
+        android:id="@+id/rg_priority"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_date">
+
+        <RadioButton
+            android:id="@+id/rb_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Urgent and Important" />
+
+        <RadioButton
+            android:id="@+id/rb_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Urgent but Not Important" />
+
+        <RadioButton
+            android:id="@+id/rb_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Not Urgent but Important" />
+
+        <RadioButton
+            android:id="@+id/rb_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Not Urgent and Not Important" />
+    </RadioGroup>
 
     <EditText
         android:id="@+id/et_description"
@@ -80,18 +114,7 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/spin_category" />
-
-    <ImageView
-        android:id="@+id/ic_calendar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/ic_calendar"
-        app:layout_constraintBottom_toBottomOf="@+id/et_date"
-        app:layout_constraintStart_toEndOf="@id/et_date"
-        app:layout_constraintTop_toBottomOf="@id/et_title" />
+        app:layout_constraintTop_toBottomOf="@+id/et_category" />
 
     <Button
         android:id="@+id/btn_addTask"

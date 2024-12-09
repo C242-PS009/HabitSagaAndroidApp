@@ -13,8 +13,8 @@ data class Task(
     @PropertyName("description") val description: String = "",
     @PropertyName("dueDate") val dueDate: Date = Date(),
     @PropertyName("category") val category: String = "",
-    @PropertyName("isCompleted") val isCompleted: Boolean = false,
-    @PropertyName("priority") val priority: Int? = null,
+    @PropertyName("isCompleted") var isCompleted: Boolean = false,
+    @PropertyName("priority") val priority: String = "",
     @PropertyName("deleted") val deleted: Boolean = false
 ): Parcelable {
 

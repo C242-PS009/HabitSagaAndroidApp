@@ -3,13 +3,14 @@ package com.c242_ps009.habitsaga.ui.task
 import android.os.Bundle
 import android.text.Editable
 import android.util.Log
-import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.c242_ps009.habitsaga.R
 import com.c242_ps009.habitsaga.databinding.ActivityDetailBinding
 import com.c242_ps009.habitsaga.ui.utils.DatePickerUtil
 import kotlinx.coroutines.launch
@@ -20,7 +21,6 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
     private val taskViewModel: TaskViewModel by viewModels()
     private var updatedDueDate: Date? = null
-    private var selectedCategory: Int = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,58 +37,92 @@ class DetailActivity : AppCompatActivity() {
         val taskDescription = intent.getStringExtra("taskDescription") ?: "No Description"
         val taskDueDate = intent.getStringExtra("taskDueDate") ?: "No Due Date"
         val taskCategory = intent.getStringExtra("taskCategory") ?: "No Category"
+        val taskPriority = intent.getStringExtra("taskPriority") ?: "No Priority"
 
-        binding.etTaskTitle.text = Editable.Factory.getInstance().newEditable(taskTitle)
-        binding.etTaskDescription.text = Editable.Factory.getInstance().newEditable(taskDescription)
-        binding.tvTaskDueDate.text = taskDueDate
-        binding.spinCategory.setSelection(getCategoryIndex(taskCategory))
+        binding.etTitle.text = Editable.Factory.getInstance().newEditable(taskTitle)
+        binding.etDescription.text = Editable.Factory.getInstance().newEditable(taskDescription)
+        binding.etDate.text = Editable.Factory.getInstance().newEditable(taskDueDate)
+        binding.etCategory.text = Editable.Factory.getInstance().newEditable(taskCategory)
+        when (taskPriority) {
+            "Urgent and Important" -> binding.rgPriority.check(R.id.rb_1)
+            "Urgent but Not Important" -> binding.rgPriority.check(R.id.rb_2)
+            "Not Urgent but Important" -> binding.rgPriority.check(R.id.rb_3)
+            "Not Urgent and Not Important" -> binding.rgPriority.check(R.id.rb_4)
+        }
 
         updatedDueDate = parseDate(taskDueDate)
-        setupSpinner()
 
         binding.apply {
 
             icCalendar.setOnClickListener {
-                DatePickerUtil.showDatePickerDialog(this@DetailActivity, binding.tvTaskDueDate) { selectedDate ->
-                    binding.tvTaskDueDate.text = selectedDate
+                DatePickerUtil.showDatePickerDialog(this@DetailActivity, binding.etDate) { selectedDate ->
+                    binding.etCategory.text = Editable.Factory.getInstance().newEditable(selectedDate)
                     updatedDueDate = parseDate(selectedDate)
                 }
             }
 
-            icDelete.setOnClickListener {
-                id?.let {
-                    taskViewModel.deleteTask(it)
+            btnEdit.setOnClickListener {
+                val updatedTitle = etTitle.text.toString().trim()
+                val updatedDescription = etDescription.text.toString().trim()
+                val taskDueDateToUpdate = updatedDueDate ?: parseDate(taskDueDate) ?: Date()
+                val updatedTaskCategory = etCategory.text.toString().trim()
+                val updatedTaskPriority = when (rgPriority.checkedRadioButtonId) {
+                    R.id.rb_1 -> "Urgent and Important"
+                    R.id.rb_2 -> "Urgent but Not Important"
+                    R.id.rb_3 -> "Not Urgent but Important"
+                    R.id.rb_4 -> "Not Urgent and Not Important"
+                    else -> ""
                 }
-                finish()
-            }
 
-            btnDone.setOnClickListener {
-                id?.let {
-                    lifecycleScope.launch {
-                        taskViewModel.markTaskCompleted(it)
+                if (updatedTaskPriority.isNotEmpty()) {
+                    id?.let {
+                        val updatedTask = Task(
+                            title = updatedTitle,
+                            description = updatedDescription,
+                            dueDate = taskDueDateToUpdate,
+                            category = updatedTaskCategory,
+                            priority = updatedTaskPriority
+                        )
+                        taskViewModel.updateTask(it, updatedTask)
                         finish()
                     }
+                } else {
+                    // Show a message to the user to select a priority
+                    Toast.makeText(this@DetailActivity, "Please select a priority", Toast.LENGTH_SHORT).show()
                 }
-            }
 
-
-            btnEdit.setOnClickListener {
-                val updatedTitle = etTaskTitle.text.toString().trim()
-                val updatedDescription = etTaskDescription.text.toString().trim()
-                val updatedCategory = binding.spinCategory.selectedItem.toString().trim()
-                val taskDueDateToUpdate = updatedDueDate ?: parseDate(taskDueDate) ?: Date()
 
                 id?.let {
                     val updatedTask = Task(
                         title = updatedTitle,
                         description = updatedDescription,
                         dueDate = taskDueDateToUpdate,
-                        category = updatedCategory
+                        category = updatedTaskCategory,
+                        priority = updatedTaskPriority
                     )
                     taskViewModel.updateTask(it, updatedTask)
                     finish()
                 }
             }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_delete -> {
+                val id = intent.getStringExtra("documentId")
+                id?.let {
+                    taskViewModel.deleteTask(it)
+                    finish()
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -105,31 +139,6 @@ class DetailActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Log.e("DetailActivity", "Error parsing date: ${e.message}")
             null
-        }
-    }
-
-    private fun setupSpinner() {
-        val priorities = arrayOf("Homework", "Work", "Personal", "Other")
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, priorities)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinCategory.adapter = adapter
-
-        binding.spinCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                selectedCategory = position + 1
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {}
-        }
-    }
-
-    private fun getCategoryIndex(category: String): Int {
-        return when (category) {
-            "Homework" -> 0
-            "Work" -> 1
-            "Personal" -> 2
-            "Other" -> 3
-            else -> 0
         }
     }
 }

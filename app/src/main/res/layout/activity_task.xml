@@ -28,8 +28,30 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="@id/cv_addTask"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/btn_sortTasks"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Sort Tasks"
+        app:layout_constraintBottom_toTopOf="@+id/cv_addTask"
+        app:layout_constraintEnd_toStartOf="@+id/btn_Done"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btn_Done"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Mark as done"
+        app:layout_constraintBottom_toTopOf="@+id/cv_addTask"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_sortTasks" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_addTask"
