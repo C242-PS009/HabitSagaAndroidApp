@@ -39,7 +39,33 @@ class TaskActivity : AppCompatActivity() {
         binding.rvTasks.adapter = taskAdapter
 
         taskViewModel.tasksLiveData.observe(this) { tasks ->
-            taskAdapter.submitList(tasks?.map { TaskAdapter.TaskEntry(it) })
+            val urgentImportant = tasks?.filter { it.category == "urgent important" }
+            val urgentNotImportant = tasks?.filter { it.category == "urgent not-important" }
+            val notUrgentImportant = tasks?.filter { it.category == "not-urgent important" }
+            val notUrgentNotImportant = tasks?.filter { it.category == "not-urgent not-important" }
+
+            val combinedTasks = mutableListOf<TaskAdapter.Entry>()
+            if (!urgentImportant.isNullOrEmpty()) {
+                combinedTasks.add(TaskAdapter.CategoryEntry("Urgent & Important"))
+                combinedTasks.addAll(urgentImportant.map { TaskAdapter.TaskEntry(it) })
+            }
+
+            if (!urgentNotImportant.isNullOrEmpty()) {
+                combinedTasks.add(TaskAdapter.CategoryEntry("Urgent & Not Important"))
+                combinedTasks.addAll(urgentNotImportant.map { TaskAdapter.TaskEntry(it) })
+            }
+
+            if (!notUrgentImportant.isNullOrEmpty()) {
+                combinedTasks.add(TaskAdapter.CategoryEntry("Not Urgent & Important"))
+                combinedTasks.addAll(notUrgentImportant.map { TaskAdapter.TaskEntry(it) })
+            }
+
+            if (!notUrgentNotImportant.isNullOrEmpty()) {
+                combinedTasks.add(TaskAdapter.CategoryEntry("Not Urgent & Not Important"))
+                combinedTasks.addAll(notUrgentNotImportant.map { TaskAdapter.TaskEntry(it) })
+            }
+
+            taskAdapter.submitList(combinedTasks)
         }
 
         taskViewModel.loading.observe(this) { isLoading ->
