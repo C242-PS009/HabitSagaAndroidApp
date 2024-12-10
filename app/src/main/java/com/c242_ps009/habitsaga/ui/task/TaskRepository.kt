@@ -12,7 +12,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
 class TaskRepository {
 
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
@@ -75,6 +74,7 @@ class TaskRepository {
         }
     }
 
+    // Make a guess, what does this function do?
     suspend fun deleteAllTasks(): Result<Unit> {
         return try {
             val tasks = tasksCollection.get().await()
@@ -115,7 +115,6 @@ class TaskRepository {
         }
     }
 
-    // Disaster function that fetches titles and get predictions from the API
     fun fetchAndProcessTasks() {
         tasksCollection
             .whereEqualTo("isCompleted", false)
@@ -130,35 +129,7 @@ class TaskRepository {
 
                     if (taskTitles.isNotEmpty()) {
                         val taskRequest = TaskRequest(taskTitles)
-                        ApiConfig.apiService().getTaskPriorities(taskRequest).enqueue(object : Callback<TaskResponse> {
-                            override fun onResponse(call: Call<TaskResponse>, response: Response<TaskResponse>) {
-                                if (response.isSuccessful) {
-                                    val labels = response.body()?.labels
-                                    labels?.let {
-                                        tasks.forEachIndexed { index, (documentId, _) ->
-                                            val priority = labels.getOrNull(index)
-                                            priority?.let {
-                                                tasksCollection.document(documentId).update("priority", it)
-                                                    .addOnSuccessListener {
-                                                        Log.d(TAG, "Priority updated for task $documentId")
-                                                    }
-                                                    .addOnFailureListener { e ->
-                                                        Log.e(TAG, "Error updating priority for task $documentId", e)
-                                                    }
-                                            }
-                                        }
-                                    } ?: run {
-                                        Log.e(TAG, "Response body is empty or doesn't contain labels")
-                                    }
-                                } else {
-                                    Log.e(TAG, "API error: ${response.code()} - ${response.message()}")
-                                }
-                            }
-
-                            override fun onFailure(call: Call<TaskResponse>, t: Throwable) {
-                                Log.e(TAG, "API failure: ${t.message}", t)
-                            }
-                        })
+                        sendToMlApiAndUpdateTasks(tasks, taskRequest)
                     } else {
                         Log.e(TAG, "No task titles found")
                     }
@@ -168,4 +139,44 @@ class TaskRepository {
             }
     }
 
+    private fun sendToMlApiAndUpdateTasks(tasks: List<Pair<String, String?>>, taskRequest: TaskRequest) {
+        ApiConfig.apiService().getTaskPriorities(taskRequest).enqueue(object : Callback<TaskResponse> {
+            override fun onResponse(call: Call<TaskResponse>, response: Response<TaskResponse>) {
+                if (response.isSuccessful) {
+                    val labels = response.body()?.labels
+                    if (labels != null && labels.size == tasks.size) {
+                        updateTaskPrioritiesInBatch(tasks, labels)
+                    } else {
+                        Log.e(TAG, "Mismatch between number of tasks and labels from API")
+                    }
+                } else {
+                    Log.e(TAG, "API error: ${response.code()} - ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<TaskResponse>, t: Throwable) {
+                Log.e(TAG, "API failure: ${t.message}", t)
+            }
+        })
+    }
+
+    private fun updateTaskPrioritiesInBatch(tasks: List<Pair<String, String?>>, labels: List<String>) {
+        val batch = firestore.batch()
+
+        tasks.forEachIndexed { index, (documentId, _) ->
+            val priority = labels.getOrNull(index)
+            priority?.let {
+                val taskRef = tasksCollection.document(documentId)
+                batch.update(taskRef, "priority", it)
+            }
+        }
+
+        batch.commit()
+            .addOnSuccessListener {
+                Log.d(TAG, "All task priorities updated successfully")
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Error updating priorities in batch", e)
+            }
+    }
 }

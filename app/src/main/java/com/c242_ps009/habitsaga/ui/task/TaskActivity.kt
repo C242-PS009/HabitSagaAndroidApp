@@ -10,13 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.c242_ps009.habitsaga.databinding.ActivityTaskBinding
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
-import android.widget.Toast
-import com.c242_ps009.habitsaga.data.retrofit.ApiConfig
-import com.c242_ps009.habitsaga.data.retrofit.TaskRequest
-import com.c242_ps009.habitsaga.data.retrofit.TaskResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class TaskActivity : AppCompatActivity() {
 
@@ -73,31 +66,6 @@ class TaskActivity : AppCompatActivity() {
                 Snackbar.make(binding.root, "No tasks selected", Snackbar.LENGTH_SHORT).show()
             }
         }
-
-        // Example task titles
-//        val tasks = listOf("Rewatch Shoujo Ramune", "Ganyang fufufafa")
-//        val request = TaskRequest(tasks)
-//
-//        // Make the API call
-//        ApiConfig.apiService().getTaskPriorities(request).enqueue(object : Callback<TaskResponse> {
-//            override fun onResponse(
-//                call: Call<TaskResponse>,
-//                response: Response<TaskResponse>
-//            ) {
-//                if (response.isSuccessful) {
-//                    val labels = response.body()?.labels
-//                    labels?.let {
-//                        Toast.makeText(this@TaskActivity, "Predictions: $it", Toast.LENGTH_SHORT).show()
-//                    }
-//                } else {
-//                    Toast.makeText(this@TaskActivity, "Error: ${response.code()}", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<TaskResponse>, t: Throwable) {
-//                Toast.makeText(this@TaskActivity, "Failed: ${t.message}", Toast.LENGTH_SHORT).show()
-//            }
-//        })
    }
 
     private fun markTasksAsDone(tasks: Set<Task>) {
