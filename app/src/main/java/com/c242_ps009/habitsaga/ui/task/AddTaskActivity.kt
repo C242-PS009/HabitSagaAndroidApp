@@ -47,16 +47,9 @@ class AddTaskActivity : AppCompatActivity() {
                 val description = etDescription.text.toString()
                 val dueDate = etDate.text.toString()
                 val category = etCategory.text.toString()
-                val priority = when (binding.rgPriority.checkedRadioButtonId) {
-                    R.id.rb_1 -> "Urgent and Important"
-                    R.id.rb_2 -> "Urgent but Not Important"
-                    R.id.rb_3 -> "Not Urgent but Important"
-                    R.id.rb_4 -> "Not Urgent and Not Important"
-                    else -> ""
-                }
 
-                if (priority.isNotEmpty()) {
-                    taskViewModel.addNewTask(userId, title, description, dueDate, category, priority ,isCompleted = false)
+                if (title.isNotEmpty()) {
+                    taskViewModel.addNewTask(userId, title, description, dueDate, category ,isCompleted = false)
                     finish()
                 } else {
                     Toast.makeText(this@AddTaskActivity, "Please select a priority", Toast.LENGTH_SHORT).show()

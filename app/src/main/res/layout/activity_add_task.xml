@@ -60,48 +60,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:hint="Enter task category"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rg_priority" />
-
-    <RadioGroup
-        android:id="@+id/rg_priority"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_date">
-
-        <RadioButton
-            android:id="@+id/rb_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Urgent and Important" />
-
-        <RadioButton
-            android:id="@+id/rb_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Urgent but Not Important" />
-
-        <RadioButton
-            android:id="@+id/rb_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Not Urgent but Important" />
-
-        <RadioButton
-            android:id="@+id/rb_4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" Not Urgent and Not Important" />
-    </RadioGroup>
+        app:layout_constraintTop_toBottomOf="@+id/et_date" />
 
     <EditText
         android:id="@+id/et_description"

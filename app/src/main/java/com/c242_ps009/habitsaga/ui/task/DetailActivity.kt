@@ -37,18 +37,11 @@ class DetailActivity : AppCompatActivity() {
         val taskDescription = intent.getStringExtra("taskDescription") ?: "No Description"
         val taskDueDate = intent.getStringExtra("taskDueDate") ?: "No Due Date"
         val taskCategory = intent.getStringExtra("taskCategory") ?: "No Category"
-        val taskPriority = intent.getStringExtra("taskPriority") ?: "No Priority"
 
         binding.etTitle.text = Editable.Factory.getInstance().newEditable(taskTitle)
         binding.etDescription.text = Editable.Factory.getInstance().newEditable(taskDescription)
         binding.etDate.text = Editable.Factory.getInstance().newEditable(taskDueDate)
         binding.etCategory.text = Editable.Factory.getInstance().newEditable(taskCategory)
-        when (taskPriority) {
-            "Urgent and Important" -> binding.rgPriority.check(R.id.rb_1)
-            "Urgent but Not Important" -> binding.rgPriority.check(R.id.rb_2)
-            "Not Urgent but Important" -> binding.rgPriority.check(R.id.rb_3)
-            "Not Urgent and Not Important" -> binding.rgPriority.check(R.id.rb_4)
-        }
 
         updatedDueDate = parseDate(taskDueDate)
 
@@ -66,39 +59,28 @@ class DetailActivity : AppCompatActivity() {
                 val updatedDescription = etDescription.text.toString().trim()
                 val taskDueDateToUpdate = updatedDueDate ?: parseDate(taskDueDate) ?: Date()
                 val updatedTaskCategory = etCategory.text.toString().trim()
-                val updatedTaskPriority = when (rgPriority.checkedRadioButtonId) {
-                    R.id.rb_1 -> "Urgent and Important"
-                    R.id.rb_2 -> "Urgent but Not Important"
-                    R.id.rb_3 -> "Not Urgent but Important"
-                    R.id.rb_4 -> "Not Urgent and Not Important"
-                    else -> ""
-                }
 
-                if (updatedTaskPriority.isNotEmpty()) {
+                if (title.isNotEmpty()) {
                     id?.let {
                         val updatedTask = Task(
                             title = updatedTitle,
                             description = updatedDescription,
                             dueDate = taskDueDateToUpdate,
-                            category = updatedTaskCategory,
-                            priority = updatedTaskPriority
+                            category = updatedTaskCategory
                         )
                         taskViewModel.updateTask(it, updatedTask)
                         finish()
                     }
                 } else {
-                    // Show a message to the user to select a priority
                     Toast.makeText(this@DetailActivity, "Please select a priority", Toast.LENGTH_SHORT).show()
                 }
-
 
                 id?.let {
                     val updatedTask = Task(
                         title = updatedTitle,
                         description = updatedDescription,
                         dueDate = taskDueDateToUpdate,
-                        category = updatedTaskCategory,
-                        priority = updatedTaskPriority
+                        category = updatedTaskCategory
                     )
                     taskViewModel.updateTask(it, updatedTask)
                     finish()

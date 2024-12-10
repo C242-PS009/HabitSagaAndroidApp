@@ -39,14 +39,8 @@ class TaskViewModel : ViewModel() {
         startRealTimeUpdates()
     }
 
-    fun fetchTitlesAndPredict() {
-        viewModelScope.launch {
-            taskRepository.fetchTitlesAndPredict()
-        }
-    }
-
     // Add a task to Firestore, what do you expect?
-    fun addNewTask(id: String, title: String, description: String, dueDate: String, category: String, priority: String, isCompleted: Boolean) {
+    fun addNewTask(id: String, title: String, description: String, dueDate: String, category: String, isCompleted: Boolean) {
         _loading.value = true
         viewModelScope.launch {
             val parsedDueDate = parseDate(dueDate)
@@ -56,7 +50,6 @@ class TaskViewModel : ViewModel() {
                 description = description,
                 dueDate = parsedDueDate ?: Date(),
                 category = category,
-                priority = priority,
                 isCompleted = isCompleted
             )
 
@@ -160,6 +153,12 @@ class TaskViewModel : ViewModel() {
     override fun onCleared() {
         super.onCleared()
         listenerRegistration?.remove()
+    }
+
+    fun fetchAndProcessTasks() {
+        viewModelScope.launch {
+            taskRepository.fetchAndProcessTasks()
+        }
     }
 
     private fun parseDate(dateString: String): Date? {

@@ -57,6 +57,10 @@ class TaskActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.btnSortTasks.setOnClickListener {
+            taskViewModel.fetchAndProcessTasks()
+        }
+
 //        binding.btnDelete.setOnClickListener {
 //            taskViewModel.deleteAllTasks()
 //        }
@@ -70,8 +74,8 @@ class TaskActivity : AppCompatActivity() {
             }
         }
 
-//        // Example task titles
-//        val tasks = listOf("")
+        // Example task titles
+//        val tasks = listOf("Rewatch Shoujo Ramune", "Ganyang fufufafa")
 //        val request = TaskRequest(tasks)
 //
 //        // Make the API call
@@ -94,7 +98,7 @@ class TaskActivity : AppCompatActivity() {
 //                Toast.makeText(this@TaskActivity, "Failed: ${t.message}", Toast.LENGTH_SHORT).show()
 //            }
 //        })
-        }
+   }
 
     private fun markTasksAsDone(tasks: Set<Task>) {
         lifecycleScope.launch {
