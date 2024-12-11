@@ -19,6 +19,9 @@ class TaskViewModel : ViewModel() {
     private val _taskDeleteStatus = MutableLiveData<Result<Unit>>()
     val taskDeleteStatus: LiveData<Result<Unit>> = _taskDeleteStatus
 
+    private val _deleteAllTasksStatus = MutableLiveData<Result<Unit>>()
+    val deleteAllTasksStatus: LiveData<Result<Unit>> = _deleteAllTasksStatus
+
     private val _taskUpdateStatus = MutableLiveData<Result<Unit>>()
     val taskUpdateStatus: LiveData<Result<Unit>> = _taskUpdateStatus
 
@@ -37,7 +40,7 @@ class TaskViewModel : ViewModel() {
     }
 
     // Add a task to Firestore, what do you expect?
-    fun addNewTask(id: String, title: String, description: String, dueDate: String, category: String, isCompleted: Boolean, priority: Int) {
+    fun addNewTask(id: String, title: String, description: String, dueDate: String, category: String, isCompleted: Boolean) {
         _loading.value = true
         viewModelScope.launch {
             val parsedDueDate = parseDate(dueDate)
@@ -47,8 +50,7 @@ class TaskViewModel : ViewModel() {
                 description = description,
                 dueDate = parsedDueDate ?: Date(),
                 category = category,
-                isCompleted = isCompleted,
-                priority = priority
+                isCompleted = isCompleted
             )
 
             val result = taskRepository.addTask(task)
@@ -113,6 +115,27 @@ class TaskViewModel : ViewModel() {
         }
     }
 
+    // Function to delete all tasks
+    fun deleteAllTasks() {
+        _loading.value = true
+        viewModelScope.launch {
+            try {
+                val result = taskRepository.deleteAllTasks()
+                _deleteAllTasksStatus.value = result
+
+                if (result.isSuccess) {
+                    tasksLiveData.value = emptyList()
+                } else {
+                    _error.value = "Error deleting all tasks: ${result.exceptionOrNull()?.message}"
+                }
+            } catch (e: Exception) {
+                _error.value = "Error deleting all tasks: ${e.message}"
+            } finally {
+                _loading.value = false
+            }
+        }
+    }
+
     suspend fun markTaskCompleted(taskId: String) {
         val result = taskRepository.completedTask(taskId)
         result.onSuccess {
@@ -130,6 +153,12 @@ class TaskViewModel : ViewModel() {
     override fun onCleared() {
         super.onCleared()
         listenerRegistration?.remove()
+    }
+
+    fun fetchAndProcessTasks() {
+        viewModelScope.launch {
+            taskRepository.fetchAndProcessTasks()
+        }
     }
 
     private fun parseDate(dateString: String): Date? {
