@@ -41,7 +41,6 @@ class UserViewModel : ViewModel() {
 
                     _userData.value = User(username, level, expPoints.toInt(), coin.toInt(), expProgress)
 
-                    updateUserLevel(userId, level)
                 } else {
                     _errorMessage.value = "User not found"
                 }
@@ -57,17 +56,6 @@ class UserViewModel : ViewModel() {
     private suspend fun fetchUserFromFirestore(userId: String): DocumentSnapshot {
         return withContext(Dispatchers.IO) {
             firestore.collection("users").document(userId).get().await()
-        }
-    }
-
-    private fun updateUserLevel(userId: String, newLevel: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                firestore.collection("users").document(userId).update("level", newLevel).await()
-                Log.d("Firestore", "Level updated successfully!")
-            } catch (e: Exception) {
-                Log.e("Firestore", "Error updating level: ${e.message}")
-            }
         }
     }
 }
