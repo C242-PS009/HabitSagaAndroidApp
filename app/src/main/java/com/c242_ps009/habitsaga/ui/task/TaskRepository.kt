@@ -88,6 +88,13 @@ class TaskRepository {
         }
     }
 
+    private val priorityMap = mapOf(
+        "urgent important" to 1,
+        "urgent not-important" to 2,
+        "not-urgent important" to 3,
+        "not-urgent not-important" to 4
+    )
+
     // Real-time updates from Firestore, fetch/read tasks in a nutshell
     fun startListener(onTasksUpdated: (List<Task>) -> Unit, onError: (Exception) -> Unit): ListenerRegistration {
         return tasksCollection.addSnapshotListener { snapshot, exception ->
@@ -100,14 +107,21 @@ class TaskRepository {
                 document.toObject(Task::class.java)?.apply {
                     id = document.id
                 }
-            }?.filter { !it.deleted } ?: emptyList()
+            }?.filter { !it.deleted }?.sortedBy { task ->
+                priorityMap[task.priority] ?: Int.MAX_VALUE
+            } ?: emptyList()
             onTasksUpdated(tasks)
         }
     }
 
     suspend fun completedTask(documentId: String): Result<Unit> {
         return try {
-            tasksCollection.document(documentId).update("isCompleted", true).await()
+            tasksCollection.document(documentId).update(
+                mapOf(
+                    "isCompleted" to true,
+                    "deleted" to true
+                )
+            ).await()
             Result.success(Unit)
         } catch (e: Exception) {
             Log.e(TAG, "Error marking task as completed with ID: $documentId", e)

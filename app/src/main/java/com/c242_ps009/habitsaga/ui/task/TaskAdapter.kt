@@ -39,6 +39,7 @@ class TaskAdapter : ListAdapter<Task, TaskAdapter.TaskViewHolder>(TaskDiffCallba
     inner class TaskViewHolder(private val binding: ItemTaskBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(task: Task, onClick: (Task, Boolean) -> Unit) {
             binding.tvTitle.text = task.title
+            binding.tvPriority.text = task.priority
             binding.cbTaskSelect.isChecked = selectedTasks.contains(task)
 
             binding.cbTaskSelect.setOnCheckedChangeListener(null)

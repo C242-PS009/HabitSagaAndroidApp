@@ -51,8 +51,11 @@ class TaskActivity : AppCompatActivity() {
         }
 
         binding.btnSortTasks.setOnClickListener {
-            taskViewModel.fetchAndProcessTasks()
+            lifecycleScope.launch {
+                taskViewModel.fetchAndProcessTasks()
+            }
         }
+
 
 //        binding.btnDelete.setOnClickListener {
 //            taskViewModel.deleteAllTasks()
