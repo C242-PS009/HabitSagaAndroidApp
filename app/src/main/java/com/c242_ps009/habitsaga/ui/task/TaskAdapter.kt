@@ -2,6 +2,7 @@ package com.c242_ps009.habitsaga.ui.task
 
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -26,8 +27,11 @@ class TaskAdapter : ListAdapter<Task, TaskAdapter.TaskViewHolder>(TaskDiffCallba
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
+        val lastTask = if (position > 0) getItem(position - 1) else null
         val task = getItem(position)
-        holder.bind(task) { clickedTask, isChecked ->
+        val showPriority = lastTask?.category != task.category
+
+        holder.bind(task, showPriority) { clickedTask, isChecked ->
             if (isChecked) {
                 selectedTasks.add(clickedTask)
             } else {
@@ -37,10 +41,16 @@ class TaskAdapter : ListAdapter<Task, TaskAdapter.TaskViewHolder>(TaskDiffCallba
     }
 
     inner class TaskViewHolder(private val binding: ItemTaskBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(task: Task, onClick: (Task, Boolean) -> Unit) {
+        fun bind(task: Task, showPriority: Boolean, onClick: (Task, Boolean) -> Unit) {
             binding.tvTitle.text = task.title
-            binding.tvPriority.text = task.priority
             binding.cbTaskSelect.isChecked = selectedTasks.contains(task)
+
+            if (showPriority) {
+                binding.tvPriority.text = task.priority
+                binding.tvPriority.visibility = View.VISIBLE
+            } else {
+                binding.tvPriority.visibility = View.GONE
+            }
 
             binding.cbTaskSelect.setOnCheckedChangeListener(null)
             binding.cbTaskSelect.setOnCheckedChangeListener { _, isChecked ->
