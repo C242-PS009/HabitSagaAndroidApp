@@ -6,12 +6,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.URLUtil.isValidUrl
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.c242_ps009.habitsaga.R
 import com.c242_ps009.habitsaga.databinding.FragmentProfileBinding
 import com.c242_ps009.habitsaga.ui.gamification.UserViewModel
+import com.c242_ps009.habitsaga.ui.inventory.InventoryActivity
 import com.c242_ps009.habitsaga.ui.profile.SettingsActivity
 import com.c242_ps009.habitsaga.ui.shop.ShopActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -32,8 +34,9 @@ class ProfileFragment : Fragment() {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
 
         binding.apply {
-            cvCustom.setOnClickListener {
-                Log.d("ProfileFragment", "Custom clicked")
+            cvCustom.setOnClickListener{
+                val intent = Intent(context, InventoryActivity::class.java)
+                startActivity(intent)
             }
 
             cvSettings.setOnClickListener {
@@ -47,11 +50,40 @@ class ProfileFragment : Fragment() {
             }
         }
 
-        binding.mascot.apply {
-            layer1 =
-                "https://raw.githubusercontent.com/C242-PS009/assets/refs/heads/master/characters/orca/xd.svg"
-            layer2 =
-                "https://raw.githubusercontent.com/C242-PS009/assets/refs/heads/master/equippables/glasses/xd.svg"
+        viewModel.userData.observe(viewLifecycleOwner) { user ->
+            user?.let {
+                Log.d("ProfileFragment", "Layer 1 URL: ${it.equippedItemLayer1}")
+                Log.d("ProfileFragment", "Layer 2 URL: ${it.equippedItemLayer2}")
+
+                // Append "/xd.png" only if URL is valid
+                val layer1Url = it.equippedItemLayer1?.let { url ->
+                    Log.d("ProfileFragment", "URL before append: $url")
+                    if (isValidUrl(url)) {
+                        "${url.trimEnd('/')}/xd.png"
+                    } else {
+                        Log.e("ProfileFragment", "Invalid URL for layer1: $url")
+                        null
+                    }
+                }
+
+                val layer2Url = it.equippedItemLayer2?.let { url ->
+                    Log.d("ProfileFragment", "URL before append: $url")
+                    if (isValidUrl(url)) {
+                        "${url.trimEnd('/')}/xd.png"
+                    } else {
+                        Log.e("ProfileFragment", "Invalid URL for layer2: $url")
+                        null
+                    }
+                }
+
+                Log.d("ProfileFragment", "Layer 1 final URL: $layer1Url")
+                Log.d("ProfileFragment", "Layer 2 final URL: $layer2Url")
+
+                binding.mascot.apply {
+                    layer1 = layer1Url
+                    layer2 = layer2Url
+                }
+            }
         }
 
         viewModel.userData.observe(viewLifecycleOwner) { user ->

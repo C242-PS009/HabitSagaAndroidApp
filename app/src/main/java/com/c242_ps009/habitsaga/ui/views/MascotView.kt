@@ -13,8 +13,8 @@ class MascotView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : RelativeLayout(context, attrs) {
 
-    private var _layer1: String?
-    private var _layer2: String?
+    private var _layer1: String? = null
+    private var _layer2: String? = null
 
     var layer1: String?
         get() = _layer1
@@ -29,7 +29,6 @@ class MascotView @JvmOverloads constructor(
             _layer2 = value
             init()
         }
-
 
     init {
         val attr = context.obtainStyledAttributes(attrs, R.styleable.MascotView)
@@ -51,15 +50,12 @@ class MascotView @JvmOverloads constructor(
         if (layer == null) return
 
         val image = JCropImageView(context)
-
         addView(image)
         image.apply {
             load(layer)
-            layoutParams.width = LayoutParams.MATCH_PARENT
-            layoutParams.height = LayoutParams.MATCH_PARENT
+            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
             setCropType(CropType.FIT_WIDTH)
             setCropAlign(CropAlign.ALIGN_TOP)
         }
     }
-
 }
