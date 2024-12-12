@@ -10,6 +10,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.c242_ps009.habitsaga.R
 import com.c242_ps009.habitsaga.databinding.ActivityShopBinding
@@ -18,6 +19,7 @@ import com.c242_ps009.habitsaga.utils.Connection
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.launch
 
 class ShopActivity : AppCompatActivity() {
     private lateinit var binding: ActivityShopBinding
@@ -25,11 +27,14 @@ class ShopActivity : AppCompatActivity() {
     private val userViewModel: UserViewModel by viewModels()
     private val auth: FirebaseAuth by lazy { Firebase.auth }
     private lateinit var shopAdapter: PurchasableItemAdapter
+    private var clickedItem: PurchasableItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityShopBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -54,9 +59,17 @@ class ShopActivity : AppCompatActivity() {
                 updateResultState(0)
                 setupMainView("equip")
             }
+
+            btnBuy.setOnClickListener {
+                val userId = auth.currentUser?.uid
+                if (userId != null && clickedItem != null) {
+                    lifecycleScope.launch {
+                        shopViewModel.purchaseItem(userId, clickedItem!!.itemId)
+                        userViewModel.fetchUserInfo(userId)
+                    }
+                }
+            }
         }
-
-
     }
 
     private fun initAnim() {
@@ -108,6 +121,7 @@ class ShopActivity : AppCompatActivity() {
         binding.itemsRv.layoutManager = GridLayoutManager(this, 4)
         shopAdapter = PurchasableItemAdapter(
             onClick = { item ->
+                clickedItem = item
                 binding.itemTv.text = item.name
                 binding.priceTv.text = String.format(item.price.toString())
                 binding.btnBuy.visibility = View.VISIBLE

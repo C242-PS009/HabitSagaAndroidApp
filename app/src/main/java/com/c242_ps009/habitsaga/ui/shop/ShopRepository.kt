@@ -38,7 +38,9 @@ class ShopRepository {
         try {
             val shopItemsSnapshot = shopItemsCollection.get().await() // Use await() for coroutines
             val shopItems = shopItemsSnapshot.documents.mapNotNull { document ->
-                document.toObject(PurchasableItem::class.java)
+                document.toObject(PurchasableItem::class.java)?.apply {
+                    itemId = document.id
+                }
             }
             Log.d(TAG, "Shop Items: $shopItems")
             emit(Result.Success(shopItems))
@@ -46,6 +48,12 @@ class ShopRepository {
             Log.e(TAG, "Error getting documents: ", e)
             emit(Result.Error(e.toString()))
         }
+    }
+
+    suspend fun purchaseItem(userId: String, itemId: String, TimeStamp: com.google.firebase.Timestamp) {
+        val purchasesCollection = firestore.collection("purchases")
+        val purchases = Purchases(userId, itemId, TimeStamp.toDate())
+        purchasesCollection.add(purchases.toMap()).await()
     }
 
     companion object {

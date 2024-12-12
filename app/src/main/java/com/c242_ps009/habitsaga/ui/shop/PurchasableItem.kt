@@ -6,6 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class PurchasableItem(
+    @PropertyName("itemId") var itemId: String = "",
     @PropertyName("img") val img: String = "",
     @PropertyName("itemCategory") val itemCategory: String = "",
     @PropertyName("name") val name: String = "",

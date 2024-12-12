@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.c242_ps009.habitsaga.utils.Result
+import com.google.firebase.Timestamp
 
 class ShopViewModel: ViewModel() {
     private val repo = ShopRepository()
@@ -34,6 +35,10 @@ class ShopViewModel: ViewModel() {
                 else -> Log.e(TAG, "fetchShopItems Unknown result: $result")
             }
         }
+    }
+
+    suspend fun purchaseItem(userId: String, itemId: String) {
+        repo.purchaseItem(userId, itemId, Timestamp.now())
     }
 
     companion object {
