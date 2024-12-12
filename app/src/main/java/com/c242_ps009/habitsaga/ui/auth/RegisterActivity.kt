@@ -13,11 +13,13 @@ import androidx.core.view.WindowInsetsCompat
 import com.c242_ps009.habitsaga.databinding.ActivityRegisterBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.firestore.FirebaseFirestore
 
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterBinding
     private lateinit var auth: FirebaseAuth
+    private lateinit var firestore: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +29,7 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         auth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -37,9 +40,12 @@ class RegisterActivity : AppCompatActivity() {
         binding.cvRegister.setOnClickListener {
             val email = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
-            if (email.isEmpty() || password.isEmpty()) {
-                binding.etEmail.error = "Email or password is empty"
-                binding.etPassword.error = "Email or password is empty"
+            val name = binding.etUsername.text.toString()
+
+            if (email.isEmpty() || password.isEmpty() || name.isEmpty()) {
+                if (email.isEmpty()) binding.etEmail.error = "Email is empty"
+                if (password.isEmpty()) binding.etPassword.error = "Password is empty"
+                if (name.isEmpty()) binding.etUsername.error = "Username is empty"
                 return@setOnClickListener
             }
 
@@ -49,32 +55,34 @@ class RegisterActivity : AppCompatActivity() {
                 .addOnCompleteListener(this) { task ->
                     binding.progressBar.visibility = View.GONE
                     if (task.isSuccessful) {
-                        Toast.makeText(
-                            baseContext,
-                            "Register success.",
-                            Toast.LENGTH_SHORT,
-                        ).show()
+                        val user = auth.currentUser
+                        user?.let {
+                            val userData = hashMapOf(
+                                "name" to name,
+                                "coin" to 0,
+                                "expPoints" to 0,
+                            )
+                            firestore.collection("users").document(user.uid)
+                                .set(userData)
+                                .addOnSuccessListener {
+                                    Toast.makeText(baseContext, "Register success.", Toast.LENGTH_SHORT).show()
 
-                        auth.signOut()
-
-                        val intent = Intent(this, LoginActivity::class.java)
-                        startActivity(intent)
-
+                                    auth.signOut()
+                                    val intent = Intent(this, LoginActivity::class.java)
+                                    startActivity(intent)
+                                }
+                                .addOnFailureListener { e ->
+                                    Log.w(TAG, "Error adding user data", e)
+                                    Toast.makeText(baseContext, "Failed to save user data", Toast.LENGTH_SHORT).show()
+                                }
+                        }
                     } else {
                         val exception = task.exception
                         if (exception is FirebaseAuthUserCollisionException) {
-                            Toast.makeText(
-                                baseContext,
-                                "The email address is already in use",
-                                Toast.LENGTH_SHORT,
-                            ).show()
+                            Toast.makeText(baseContext, "The email address is already in use", Toast.LENGTH_SHORT).show()
                         } else {
                             Log.w(TAG, "createUserWithEmail:failure", exception)
-                            Toast.makeText(
-                                baseContext,
-                                "Register failed.",
-                                Toast.LENGTH_SHORT,
-                            ).show()
+                            Toast.makeText(baseContext, "Register failed.", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
