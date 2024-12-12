@@ -1,4 +1,4 @@
-package com.c242_ps009.habitsaga.ui.utils
+package com.c242_ps009.habitsaga.utils
 
 import android.app.DatePickerDialog
 import android.content.Context

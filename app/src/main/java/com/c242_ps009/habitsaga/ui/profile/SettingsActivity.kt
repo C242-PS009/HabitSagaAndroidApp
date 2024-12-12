@@ -1,4 +1,4 @@
-package com.c242_ps009.habitsaga.ui.settings
+package com.c242_ps009.habitsaga.ui.profile
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

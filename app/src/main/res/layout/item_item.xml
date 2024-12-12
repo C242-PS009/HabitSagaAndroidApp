@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.c242_ps009.habitsaga.ui.views.Card3dView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:layout_marginBottom="20dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:color="#FFFFFF"
+    app:shadowColor="#D6D6D6">
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/item_image"
+        android:scaleType="fitXY"
+        tools:srcCompat="@tools:sample/avatars"
+        />
+</com.c242_ps009.habitsaga.ui.views.Card3dView>

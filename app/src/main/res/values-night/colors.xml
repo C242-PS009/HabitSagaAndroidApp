@@ -5,4 +5,9 @@
     <color name="card_shadow">#FF274F83</color>
     <color name="bg_card_color">#303030</color>
     <color name="bg_card_shadow">#1B1B1B</color>
+
+    <color name="inc_dec_btn_color">#FFF8F8F8</color>
+    <color name="inc_dec_btn_shadow">#FFC8C8C8</color>
+    <color name="inc_dec_text">#1B1B1B</color>
+    <color name="bg_shade">#444444</color>
 </resources>

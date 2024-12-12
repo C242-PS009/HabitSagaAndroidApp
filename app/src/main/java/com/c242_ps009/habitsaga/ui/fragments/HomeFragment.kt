@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.c242_ps009.habitsaga.databinding.FragmentHomeBinding
+import com.c242_ps009.habitsaga.ui.pomodoro.PomodoroActivity
 import com.c242_ps009.habitsaga.ui.task.TaskActivity
 
 
@@ -36,7 +37,8 @@ class HomeFragment : Fragment() {
                 startActivity(intent)
             }
             cvPomodoro.setOnClickListener {
-                Log.i("HomeFragment", "Profile clicked")
+                val intent = Intent(context, PomodoroActivity::class.java)
+                startActivity(intent)
             }
         }
 

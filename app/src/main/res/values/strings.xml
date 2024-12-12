@@ -11,7 +11,24 @@
     <string name="incomplete">Incomplete\n</string>
     <string name="tasks">Tasks\n</string>
     <string name="level">Level %s</string>
-    <string name="coin">%s coins</string>
     <string name="exp_progress">%s/100 XP</string>
     <string name="unauthorized">[Unauthorized]</string>
+    <string name="diagonal_shade">Diagonal Shade</string>
+    <string name="decrement">-</string>
+    <string name="increment">+</string>
+    <string name="start">START!</string>
+    <string name="pd_board">Pomodoro Board</string>
+    <string name="sessions">SESSIONS</string>
+    <string name="reset">RESET</string>
+    <string name="customize">CUSTOMIZE</string>
+    <string name="shop">SHOP</string>
+    <string name="settings">SETTINGS</string>
+    <string name="loading">Loading…</string>
+    <string name="item_image">Item Image</string>
+    <string name="task_management">TASK MANAGEMENT</string>
+    <string name="pomodoro_timer">POMODORO TIMER</string>
+    <string name="characters">Characters</string>
+    <string name="accessories">Accessories</string>
+    <string name="buy">BUY</string>
+    <string name="_3d_support">3D Support</string>
 </resources>

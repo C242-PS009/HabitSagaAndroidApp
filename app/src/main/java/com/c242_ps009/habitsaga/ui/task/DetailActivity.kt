@@ -11,7 +11,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.c242_ps009.habitsaga.databinding.ActivityDetailBinding
-import com.c242_ps009.habitsaga.ui.utils.DatePickerUtil
+import com.c242_ps009.habitsaga.utils.DatePickerUtil
 import kotlinx.coroutines.launch
 import java.util.Date
 

@@ -2,6 +2,7 @@ package com.c242_ps009.habitsaga.ui.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,8 @@ import androidx.fragment.app.viewModels
 import com.c242_ps009.habitsaga.R
 import com.c242_ps009.habitsaga.databinding.FragmentProfileBinding
 import com.c242_ps009.habitsaga.ui.gamification.UserViewModel
-import com.c242_ps009.habitsaga.ui.settings.SettingsActivity
+import com.c242_ps009.habitsaga.ui.profile.SettingsActivity
+import com.c242_ps009.habitsaga.ui.shop.ShopActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -30,8 +32,17 @@ class ProfileFragment : Fragment() {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
 
         binding.apply {
+            cvCustom.setOnClickListener {
+                Log.d("ProfileFragment", "Custom clicked")
+            }
+
             cvSettings.setOnClickListener {
                 val intent = Intent(context, SettingsActivity::class.java)
+                startActivity(intent)
+            }
+
+            cvShop.setOnClickListener {
+                val intent = Intent(context, ShopActivity::class.java)
                 startActivity(intent)
             }
         }
@@ -46,11 +57,8 @@ class ProfileFragment : Fragment() {
         viewModel.userData.observe(viewLifecycleOwner) { user ->
             user?.let {
                 binding.tvUsername.text = it.name
-//                binding.tvLevel.text = "Level ${it.level}"
-//                binding.tvCoin.text = it.coin.toString()
-//                binding.tvExpProgress.text = "${it.expProgress}/100"
                 binding.tvLevel.text = getString(R.string.level, it.level.toString())
-                binding.tvCoin.text = getString(R.string.coin, it.coin.toString())
+                binding.tvCoin.text = String.format(it.coin.toString())
                 binding.tvExpProgress.text = getString(R.string.exp_progress, it.expProgress.toString())
                 binding.pbLevel.progress = it.expProgress
             }
@@ -66,8 +74,6 @@ class ProfileFragment : Fragment() {
         if (userId != null) {
             viewModel.fetchUserInfo(userId)
         } else {
-//            binding.tvUsername.text = "User not logged in"
-//            binding.tvLevel.text = "Level: N/A"
             binding.tvUsername.text = getString(R.string.unauthorized)
             binding.tvLevel.text = getString(R.string.unauthorized)
             binding.pbLevel.progress = 0

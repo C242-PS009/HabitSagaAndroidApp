@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,7 +19,13 @@
         android:theme="@style/Theme.HabitSaga"
         tools:targetApi="31">
         <activity
-            android:name=".ui.settings.SettingsActivity"
+            android:name=".ui.shop.ShopActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.pomodoro.PomodoroActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.profile.SettingsActivity"
             android:exported="false" />
         <activity
             android:name=".ui.task.DetailActivity"
@@ -39,6 +51,10 @@
         <activity
             android:name=".ui.activities.MainActivity"
             android:exported="true" />
+        <service
+            android:name=".ui.pomodoro.PomodoroService"
+            android:enabled="true"
+            android:exported="false"/>
     </application>
 
 </manifest>
