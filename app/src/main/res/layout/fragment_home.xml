@@ -79,7 +79,7 @@
             <com.c242_ps009.habitsaga.ui.views.MascotView
                 android:id="@+id/mascot"
                 android:layout_width="0dp"
-                android:layout_height="210dp"
+                android:layout_height="190dp"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1" />
 

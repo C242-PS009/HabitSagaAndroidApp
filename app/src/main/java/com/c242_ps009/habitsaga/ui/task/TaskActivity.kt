@@ -2,6 +2,7 @@ package com.c242_ps009.habitsaga.ui.task
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -51,20 +52,21 @@ class TaskActivity : AppCompatActivity() {
         }
 
         binding.btnSortTasks.setOnClickListener {
+            binding.progressBar.visibility = View.VISIBLE
             lifecycleScope.launch {
                 taskViewModel.fetchAndProcessTasks()
+                binding.progressBar.visibility = View.GONE
             }
         }
 
-
-//        binding.btnDone.setOnClickListener {
-//            taskViewModel.deleteAllTasks()
-//        }
-
         binding.btnDone.setOnClickListener {
             val selectedTasks = taskAdapter.getSelectedTasks()
+            binding.progressBar.visibility = View.VISIBLE
             if (selectedTasks.isNotEmpty()) {
-                markTasksAsDone(selectedTasks)
+                lifecycleScope.launch {
+                    markTasksAsDone(selectedTasks)
+                    binding.progressBar.visibility = View.GONE
+                }
             } else {
                 Snackbar.make(binding.root, "No tasks selected", Snackbar.LENGTH_SHORT).show()
             }

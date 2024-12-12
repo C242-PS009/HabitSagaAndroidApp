@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -30,11 +31,12 @@ class InventoryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         binding = ActivityInventoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
@@ -65,7 +67,15 @@ class InventoryActivity : AppCompatActivity() {
                     Toast.makeText(this@InventoryActivity, "Equipped ${item.name}", Toast.LENGTH_SHORT).show()
                 }
             }
+
+            btnReset.setOnClickListener {
+                userViewModel.resetItem()
+                Toast.makeText(this@InventoryActivity, "Reset Equipment", Toast.LENGTH_SHORT).show()
+            }
         }
+
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun initAnim() {
@@ -120,6 +130,7 @@ class InventoryActivity : AppCompatActivity() {
                 clickedItem = item
                 binding.itemTv.text = item.name
                 binding.btnEquip.visibility = View.VISIBLE
+                binding.btnReset.visibility = View.VISIBLE
                 val fadeInDetail = ObjectAnimator.ofFloat(binding.itemDetail, "alpha", 0f, 1f).setDuration(500)
                 val slideFromRightDetail = ObjectAnimator.ofFloat(binding.itemDetail, "translationX", 100f, 0f).apply {
                     duration = 500
@@ -174,4 +185,10 @@ class InventoryActivity : AppCompatActivity() {
             }
         }
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
 }

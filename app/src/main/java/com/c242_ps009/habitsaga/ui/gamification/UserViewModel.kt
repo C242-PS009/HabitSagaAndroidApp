@@ -81,6 +81,20 @@ class UserViewModel : ViewModel() {
         }
     }
 
+    fun resetItem() {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val userRef = firestore.collection("users").document(userId)
+
+        userRef.update("equippedItemLayer2", "")
+            .addOnSuccessListener {
+                Log.d("UserViewModel", "User data reset successfully")
+            }
+            .addOnFailureListener { e ->
+                Log.e("UserViewModel", "Error resetting user data: ${e.message}")
+                _errorMessage.value = "Error resetting data: ${e.message}"
+            }
+    }
+
     /*
      You know, Firestore handles the removal under the hood... but hey, I’m just here
      to make sure it's removed manually too, because memory leaks are a big no-no,

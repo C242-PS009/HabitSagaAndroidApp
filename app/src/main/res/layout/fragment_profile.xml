@@ -3,11 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_main"
-    tools:context=".ui.activities.MainActivity">
+    tools:background="@drawable/bg_main">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -23,67 +21,59 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/container"
-            android:backgroundTintMode="add"
-            android:backgroundTint="#11FFFFFF"
-            android:paddingTop="12dp"
-            android:orientation="vertical">
+            android:layout_marginTop="32dp"
+            android:gravity="bottom"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="bottom"
-                android:orientation="horizontal">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_username"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                app:cardBackgroundColor="#50000000"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:contentPaddingBottom="5dp"
+                app:contentPaddingLeft="10dp"
+                app:contentPaddingRight="10dp"
+                app:contentPaddingTop="5dp">
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cv_username"
+                <TextView
+                    android:id="@+id/tv_username"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="16dp"
-                    app:cardBackgroundColor="#50000000"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="0dp"
-                    app:contentPaddingBottom="5dp"
-                    app:contentPaddingLeft="10dp"
-                    app:contentPaddingRight="10dp"
-                    app:contentPaddingTop="5dp">
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/league_spartan_bold"
+                    android:text="@string/loading"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
 
-                    <TextView
-                        android:id="@+id/tv_username"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/league_spartan_bold"
-                        android:text="@string/loading"
-                        android:textColor="@color/white"
-                        android:textSize="20sp" />
+            </androidx.cardview.widget.CardView>
 
-                </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_level"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:contentPaddingBottom="5dp"
+                app:contentPaddingLeft="10dp"
+                app:contentPaddingRight="10dp"
+                app:contentPaddingTop="5dp">
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cv_level"
+                <TextView
+                    android:id="@+id/tv_level"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="16dp"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="0dp"
-                    app:contentPaddingBottom="5dp"
-                    app:contentPaddingLeft="10dp"
-                    app:contentPaddingRight="10dp"
-                    app:contentPaddingTop="5dp">
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/league_spartan_bold"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    tools:text="Lv. " />
 
-                    <TextView
-                        android:id="@+id/tv_level"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/league_spartan_medium"
-                        tools:text="Lv. "
-                        android:textColor="@color/black"
-                        android:textSize="20sp" />
+            </androidx.cardview.widget.CardView>
 
-                </androidx.cardview.widget.CardView>
-
-            </LinearLayout>
+        </LinearLayout>
 
             <ProgressBar
                 android:id="@+id/pb_level"
@@ -120,7 +110,6 @@
                 android:textSize="16sp"
                 app:drawableRightCompat="@drawable/ic_coin" />
 
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -139,7 +128,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="32dp"
                     android:layout_marginEnd="16dp"
                     android:padding="10dp"
                     app:color="@color/card_color"
@@ -150,10 +139,10 @@
                         android:layout_height="match_parent"
                         android:fontFamily="@font/league_spartan_bold"
                         android:gravity="center_vertical"
-                        android:text="@string/customize"
+                        android:text="@string/inventory"
                         android:textColor="@color/white"
-                        android:textSize="12sp"
-                        app:drawableRightCompat="@drawable/ic_settings" />
+                        android:textSize="16sp"
+                        app:drawableRightCompat="@drawable/round_inventory_2_24" />
 
                 </com.c242_ps009.habitsaga.ui.views.Card3dView>
 
@@ -207,34 +196,34 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
-                <RelativeLayout
+                <ImageView
+                    android:id="@+id/base_image"
                     android:layout_width="150.675dp"
-                    android:layout_height="410.6085dp">
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:src="@drawable/bg_char"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:src="@drawable/bg_char" />
+                <com.c242_ps009.habitsaga.ui.views.MascotView
+                    android:id="@+id/mascot"
+                    android:layout_width="150.675dp"
+                    android:layout_height="400dp"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="bottom"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-                    <com.c242_ps009.habitsaga.ui.views.MascotView
-                        android:id="@+id/mascot"
-                        android:layout_width="150.675dp"
-                        android:layout_height="400.6085dp"
-                        android:gravity="bottom"
-                        android:paddingBottom="10dp"/>
-
-                </RelativeLayout>
-
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
 
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

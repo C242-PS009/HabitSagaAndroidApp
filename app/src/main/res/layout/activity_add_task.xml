@@ -80,29 +80,71 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_category" />
 
-    <Button
+    <com.c242_ps009.habitsaga.ui.views.Card3dView
         android:id="@+id/btn_addTask"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:text="Add Task"
+        app:color="#F8F8F8"
+        app:shadowColor="#C8C8C8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_cancel"
-        app:layout_constraintTop_toBottomOf="@id/et_description" />
+        app:layout_constraintTop_toBottomOf="@id/et_description">
 
-    <Button
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/league_spartan_bold"
+                android:text="Add Task"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </com.c242_ps009.habitsaga.ui.views.Card3dView>
+
+    <com.c242_ps009.habitsaga.ui.views.Card3dView
         android:id="@+id/btn_cancel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="Cancel"
+        app:color="#F8F8F8"
+        app:shadowColor="#C8C8C8"
         app:layout_constraintStart_toEndOf="@+id/btn_addTask"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_description" />
+        app:layout_constraintTop_toBottomOf="@+id/et_description">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/league_spartan_bold"
+                android:text="Cancel"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </com.c242_ps009.habitsaga.ui.views.Card3dView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

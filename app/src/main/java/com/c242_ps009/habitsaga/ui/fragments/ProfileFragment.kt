@@ -55,26 +55,17 @@ class ProfileFragment : Fragment() {
                 Log.d("ProfileFragment", "Layer 1 URL: ${it.equippedItemLayer1}")
                 Log.d("ProfileFragment", "Layer 2 URL: ${it.equippedItemLayer2}")
 
-                // Append "/xd.png" only if URL is valid
-                val layer1Url = it.equippedItemLayer1?.let { url ->
-                    Log.d("ProfileFragment", "URL before append: $url")
-                    if (isValidUrl(url)) {
-                        "${url.trimEnd('/')}/xd.png"
-                    } else {
-                        Log.e("ProfileFragment", "Invalid URL for layer1: $url")
-                        null
-                    }
+                val paths = listOf("/xd.png", "/think.png", "/halo.png", "/hmph.png", "/stand.png")
+                val randomPath = paths.random()
+
+                fun getValidLayerUrl(layerUrl: String?): String? {
+                    return layerUrl?.takeIf { isValidUrl(it) }?.let { url ->
+                        "${url.trimEnd('/')}$randomPath"
+                    }.also { if (it == null) Log.e("ProfileFragment", "Invalid URL: $layerUrl") }
                 }
 
-                val layer2Url = it.equippedItemLayer2?.let { url ->
-                    Log.d("ProfileFragment", "URL before append: $url")
-                    if (isValidUrl(url)) {
-                        "${url.trimEnd('/')}/xd.png"
-                    } else {
-                        Log.e("ProfileFragment", "Invalid URL for layer2: $url")
-                        null
-                    }
-                }
+                val layer1Url = getValidLayerUrl(it.equippedItemLayer1)
+                val layer2Url = getValidLayerUrl(it.equippedItemLayer2)
 
                 Log.d("ProfileFragment", "Layer 1 final URL: $layer1Url")
                 Log.d("ProfileFragment", "Layer 2 final URL: $layer2Url")
@@ -85,6 +76,7 @@ class ProfileFragment : Fragment() {
                 }
             }
         }
+
 
         viewModel.userData.observe(viewLifecycleOwner) { user ->
             user?.let {
