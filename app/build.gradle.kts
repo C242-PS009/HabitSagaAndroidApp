@@ -71,7 +71,6 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
 
-
     // Utils
     implementation(libs.jcropimageview) { isTransitive = false }
 
@@ -79,4 +78,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit2.converter.gson)
     implementation(libs.logging.interceptor)
+
+    // Chart
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }

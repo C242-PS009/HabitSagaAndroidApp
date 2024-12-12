@@ -5,6 +5,7 @@ import com.c242_ps009.habitsaga.data.retrofit.ApiConfig
 import com.c242_ps009.habitsaga.data.retrofit.TaskRequest
 import com.c242_ps009.habitsaga.data.retrofit.TaskResponse
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import kotlinx.coroutines.tasks.await
@@ -33,7 +34,8 @@ class TaskRepository {
                 category = task.category,
                 isCompleted = task.isCompleted,
                 priority = task.priority,
-                deleted = task.deleted
+                deleted = task.deleted,
+                completedAt = task.completedAt
             ).toMap()
             val documentReference = tasksCollection.add(taskMap).await()
             Result.success(documentReference.id)
@@ -119,9 +121,11 @@ class TaskRepository {
             tasksCollection.document(documentId).update(
                 mapOf(
                     "isCompleted" to true,
-                    "deleted" to true
+                    "deleted" to true,
+                    "completedAt" to FieldValue.serverTimestamp()
                 )
             ).await()
+
             Result.success(Unit)
         } catch (e: Exception) {
             Log.e(TAG, "Error marking task as completed with ID: $documentId", e)

@@ -57,7 +57,7 @@ class TaskActivity : AppCompatActivity() {
         }
 
 
-//        binding.btnDelete.setOnClickListener {
+//        binding.btnDone.setOnClickListener {
 //            taskViewModel.deleteAllTasks()
 //        }
 

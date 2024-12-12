@@ -14,4 +14,6 @@
     <string name="coin">%s coins</string>
     <string name="exp_progress">%s/100 XP</string>
     <string name="unauthorized">[Unauthorized]</string>
+    <string name="completed_task">Completed Task: %d</string>
+    <string name="incomplete_task">Incomplete Task: %d</string>
 </resources>
