@@ -29,7 +29,7 @@ class TaskAdapter : ListAdapter<Task, TaskAdapter.TaskViewHolder>(TaskDiffCallba
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         val lastTask = if (position > 0) getItem(position - 1) else null
         val task = getItem(position)
-        val showPriority = lastTask?.category != task.category
+        val showPriority = lastTask?.priority != task.priority
 
         holder.bind(task, showPriority) { clickedTask, isChecked ->
             if (isChecked) {
