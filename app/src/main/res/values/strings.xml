@@ -11,6 +11,7 @@
     <string name="incomplete">Incomplete\n</string>
     <string name="tasks">Tasks\n</string>
     <string name="level">Level %s</string>
+    <string name="coin">%s coins</string>
     <string name="exp_progress">%s/100 XP</string>
     <string name="unauthorized">[Unauthorized]</string>
     <string name="diagonal_shade">Diagonal Shade</string>
@@ -31,4 +32,6 @@
     <string name="accessories">Accessories</string>
     <string name="buy">BUY</string>
     <string name="_3d_support">3D Support</string>
+    <string name="completed_task">Completed Task: %d</string>
+    <string name="incomplete_task">Incomplete Task: %d</string>
 </resources>

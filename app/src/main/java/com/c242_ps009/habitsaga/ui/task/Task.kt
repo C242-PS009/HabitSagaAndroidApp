@@ -2,6 +2,7 @@ package com.c242_ps009.habitsaga.ui.task
 
 import android.os.Parcelable
 import com.google.firebase.firestore.PropertyName
+import com.google.firebase.firestore.ServerTimestamp
 import kotlinx.parcelize.Parcelize
 import java.util.Date
 
@@ -15,7 +16,8 @@ data class Task(
     @PropertyName("category") val category: String = "",
     @PropertyName("isCompleted") var isCompleted: Boolean = false,
     @PropertyName("priority") val priority: String = "",
-    @PropertyName("deleted") val deleted: Boolean = false
+    @PropertyName("deleted") val deleted: Boolean = false,
+    @ServerTimestamp @PropertyName("completedAt") var completedAt: Date? = null
 ): Parcelable {
 
     /*
@@ -32,8 +34,8 @@ data class Task(
             "category" to category,
             "isCompleted" to isCompleted,
             "priority" to priority,
-            "deleted" to deleted
+            "deleted" to deleted,
+            "completedAt" to completedAt
         )
     }
 }
-
