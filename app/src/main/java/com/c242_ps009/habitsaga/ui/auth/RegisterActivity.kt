@@ -61,6 +61,8 @@ class RegisterActivity : AppCompatActivity() {
                                 "name" to name,
                                 "coin" to 0,
                                 "expPoints" to 0,
+                                "equippedItemLayer1" to "",
+                                "equippedItemLayer2" to ""
                             )
                             firestore.collection("users").document(user.uid)
                                 .set(userData)
