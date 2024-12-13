@@ -21,9 +21,9 @@
     <string name="pd_board">Pomodoro Board</string>
     <string name="sessions">SESSIONS</string>
     <string name="reset">RESET</string>
-    <string name="inventory">Inventory</string>
-    <string name="shop">Shop</string>
-    <string name="settings">Settings</string>
+    <string name="inventory">INVENTORY</string>
+    <string name="shop">SHOP</string>
+    <string name="settings">SETTINGS</string>
     <string name="loading">Loading…</string>
     <string name="item_image">Item Image</string>
     <string name="task_management">Task Management</string>

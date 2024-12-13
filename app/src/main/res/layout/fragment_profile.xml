@@ -178,6 +178,7 @@
                     android:layout_marginTop="24dp"
                     android:layout_marginEnd="16dp"
                     android:padding="10dp"
+                    android:visibility="invisible"
                     app:color="@color/card_color"
                     app:shadowColor="@color/card_shadow">
 

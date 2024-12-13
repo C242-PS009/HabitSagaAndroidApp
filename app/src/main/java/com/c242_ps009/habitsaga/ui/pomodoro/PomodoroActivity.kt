@@ -12,6 +12,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.view.View
 import android.view.animation.DecelerateInterpolator
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -71,17 +72,22 @@ class PomodoroActivity : AppCompatActivity() {
             }
         }
 
+        if (sessions == 1) binding.decrementButton.visibility = View.INVISIBLE
+
         binding.apply {
             sessionAmt.text = String.format(sessions.toString())
 
             decrementButton.setOnClickListener {
                 sessions--
                 binding.sessionAmt.text = String.format(sessions.toString())
+                if (sessions == 1) binding.decrementButton.visibility = View.INVISIBLE
+                else binding.decrementButton.visibility = View.VISIBLE
             }
 
             incrementButton.setOnClickListener {
                 sessions++
                 binding.sessionAmt.text = String.format(sessions.toString())
+                 binding.decrementButton.visibility = View.VISIBLE
             }
 
             startButton.setOnClickListener {

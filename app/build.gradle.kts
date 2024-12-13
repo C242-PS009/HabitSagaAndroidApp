@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.c242_ps009.habitsaga"
-        minSdk = 24
+        minSdk = 26
         //noinspection OldTargetApi
         targetSdk = 34
         versionCode = 1
