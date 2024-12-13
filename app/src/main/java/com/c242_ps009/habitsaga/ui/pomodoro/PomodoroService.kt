@@ -104,6 +104,8 @@ class PomodoroService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.cancel(2) // Cancel the ongoing notification
         timer?.cancel()
     }
 }

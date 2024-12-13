@@ -23,7 +23,6 @@ class TaskActivity : AppCompatActivity() {
 
         binding = ActivityTaskBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        enableEdgeToEdge()
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

@@ -141,7 +141,7 @@
                         android:gravity="center_vertical"
                         android:text="@string/inventory"
                         android:textColor="@color/white"
-                        android:textSize="16sp"
+                        android:textSize="12sp"
                         app:drawableRightCompat="@drawable/round_inventory_2_24" />
 
                 </com.c242_ps009.habitsaga.ui.views.Card3dView>

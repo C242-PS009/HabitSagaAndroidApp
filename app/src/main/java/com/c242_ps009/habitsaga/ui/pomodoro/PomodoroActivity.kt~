@@ -28,7 +28,6 @@ import java.util.Locale
 class PomodoroActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPomodoroBinding
     private var sessions: Int = 1
-    private var isReset: Boolean = false
 
     private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -40,8 +39,7 @@ class PomodoroActivity : AppCompatActivity() {
                 val sessions = intent.getIntExtra("sessions", 0 )
                 val isBreak = intent.getBooleanExtra("isBreak", false)
                 binding.apply {
-                    if (!isReset) middleText.text = String.format(Locale.US,"%02d:%02d", minutes, seconds)
-                    else middleText.text = getString(R.string.sessions)
+                    middleText.text = String.format(Locale.US,"%02d:%02d", minutes, seconds)
                     timerProgressBar.progress = millisUntilFinished
                     if (!isBreak) sessionCounter.text = String.format("Session: $currentSession/$sessions")
                     else sessionCounter.text = String.format("[Intermission]\nSession: $currentSession/$sessions")
@@ -94,7 +92,6 @@ class PomodoroActivity : AppCompatActivity() {
             }
 
             startButton.setOnClickListener {
-                isReset = false
                 sessions = binding.sessionAmt.text.toString().toInt()
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     if (ContextCompat.checkSelfPermission(this@PomodoroActivity, Manifest.permission.POST_NOTIFICATIONS)
@@ -105,7 +102,6 @@ class PomodoroActivity : AppCompatActivity() {
             }
 
             resetButton.setOnClickListener {
-                isReset = true
                 stopService(Intent(this@PomodoroActivity, PomodoroService::class.java))
                 binding.middleText.text = getString(R.string.sessions)
                 val moveMiddleText = ObjectAnimator.ofFloat(binding.middleText, "translationY", 0f, -160f).apply {
