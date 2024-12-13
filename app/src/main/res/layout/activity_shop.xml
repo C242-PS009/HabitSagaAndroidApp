@@ -243,7 +243,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/league_spartan_bold"
             android:textSize="24sp"
-            android:textColor="#000000"
+            android:textColor="@color/white"
             android:text="@string/buy"/>
     </com.c242_ps009.habitsaga.ui.views.Card3dView>
 </androidx.constraintlayout.widget.ConstraintLayout>

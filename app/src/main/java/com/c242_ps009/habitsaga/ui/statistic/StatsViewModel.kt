@@ -4,12 +4,14 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 
 class StatsViewModel : ViewModel() {
     private val firestore = FirebaseFirestore.getInstance()
     private var listenerRegistration: ListenerRegistration? = null
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     private val _taskCounts = MutableLiveData<Pair<Int, Int>>()
     val taskCounts: LiveData<Pair<Int, Int>> get() = _taskCounts
@@ -20,8 +22,14 @@ class StatsViewModel : ViewModel() {
     private val _priorityCounts = MutableLiveData<Map<String, Int>>()
     val priorityCounts: LiveData<Map<String, Int>> get() = _priorityCounts
 
+    private fun getUserId(): String? {
+        return auth.currentUser?.uid
+    }
+
     fun fetchPriorityCounts() {
+        val userId = getUserId() ?: return
         listenerRegistration = firestore.collection("eisenhower_tasks")
+            .whereEqualTo("userId", userId)
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
                     Log.e("StatsViewModel", "Error fetching priority counts", e)
@@ -46,7 +54,9 @@ class StatsViewModel : ViewModel() {
     }
 
     fun fetchTaskCounts() {
+        val userId = getUserId() ?: return
         listenerRegistration = firestore.collection("eisenhower_tasks")
+            .whereEqualTo("userId", userId)
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
                     Log.e("StatsViewModel", "Error fetching task counts", e)
@@ -61,7 +71,9 @@ class StatsViewModel : ViewModel() {
     }
 
     fun fetchTaskDaily() {
+        val userId = getUserId() ?: return
         listenerRegistration = firestore.collection("eisenhower_tasks")
+            .whereEqualTo("userId", userId)
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
                     Log.e("StatsViewModel", "Error fetching task counts", e)

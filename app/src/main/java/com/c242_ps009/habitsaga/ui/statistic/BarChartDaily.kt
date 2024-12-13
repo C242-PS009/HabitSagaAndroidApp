@@ -46,7 +46,7 @@ class BarChartDaily {
         }
 
         val barDataSet = BarDataSet(entries, "Tasks Completed")
-        barDataSet.color = Color.BLUE
+        barDataSet.color = Color.parseColor("#3737D2")
         barDataSet.valueTextColor = Color.WHITE
         barDataSet.valueTextSize = 10f
         barDataSet.valueFormatter = object : ValueFormatter() {

@@ -1,6 +1,7 @@
 package com.c242_ps009.habitsaga.ui.statistic
 
 import android.graphics.Color
+import com.c242_ps009.habitsaga.R
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
@@ -29,7 +30,7 @@ class BarChartPriority {
             setDrawAxisLine(false)
             textSize = 12f
             textColor = Color.WHITE
-            labelRotationAngle = 45f  // Set the orientation to 45 degrees
+            labelRotationAngle = 45f
         }
 
         barChart.axisLeft.apply {
@@ -49,10 +50,10 @@ class BarChartPriority {
         val notUrgentNotImportant = data.filter { it.x == 3f }
 
         val barDataSets = listOf(
-            createBarDataSet(urgentImportant, "Urgent Important", Color.RED),
-            createBarDataSet(urgentNotImportant, "Urgent Not-important", Color.YELLOW),
-            createBarDataSet(notUrgentImportant, "Not-urgent Important", Color.BLUE),
-            createBarDataSet(notUrgentNotImportant, "Not-urgent Not-important", Color.GREEN)
+            createBarDataSet(urgentImportant, "Urgent Important", Color.parseColor("#C14646")),
+            createBarDataSet(urgentNotImportant, "Urgent Not-important", Color.parseColor("#F4F58A")),
+            createBarDataSet(notUrgentImportant, "Not-urgent Important", Color.parseColor("#3737D2")),
+            createBarDataSet(notUrgentNotImportant, "Not-urgent Not-important", Color.parseColor("#72C678"))
         )
 
         barChart.data = BarData(barDataSets)

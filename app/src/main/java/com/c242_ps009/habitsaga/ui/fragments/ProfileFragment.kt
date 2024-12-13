@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.c242_ps009.habitsaga.R
 import com.c242_ps009.habitsaga.databinding.FragmentProfileBinding
+import com.c242_ps009.habitsaga.ui.auth.LoginActivity
 import com.c242_ps009.habitsaga.ui.gamification.UserViewModel
 import com.c242_ps009.habitsaga.ui.inventory.InventoryActivity
 import com.c242_ps009.habitsaga.ui.profile.SettingsActivity
