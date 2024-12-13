@@ -98,8 +98,8 @@ class TaskRepository {
     )
 
     // Real-time updates from Firestore, fetch/read tasks in a nutshell
-    fun startListener(onTasksUpdated: (List<Task>) -> Unit, onError: (Exception) -> Unit): ListenerRegistration {
-        return tasksCollection.addSnapshotListener { snapshot, exception ->
+    fun startListener(userId: String, onTasksUpdated: (List<Task>) -> Unit, onError: (Exception) -> Unit): ListenerRegistration {
+        return tasksCollection.whereEqualTo("userId", userId).addSnapshotListener { snapshot, exception ->
             if (exception != null) {
                 onError(exception)
                 return@addSnapshotListener

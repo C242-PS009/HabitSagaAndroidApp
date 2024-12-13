@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.LiveData
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ListenerRegistration
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -34,9 +35,13 @@ class TaskViewModel : ViewModel() {
     val error: LiveData<String> = _error
 
     private var listenerRegistration: ListenerRegistration? = null
-
     init {
-        startRealTimeUpdates()
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        if (userId != null) {
+            startRealTimeUpdates(userId)
+        } else {
+            _error.value = "User not authenticated"
+        }
     }
 
     // Add a task to Firestore, what do you expect?
@@ -64,8 +69,9 @@ class TaskViewModel : ViewModel() {
     }
 
     // Real-time updates from Firestore, fetch/read tasks in a nutshell
-    private fun startRealTimeUpdates() {
+    private fun startRealTimeUpdates(userId: String) {
         listenerRegistration = taskRepository.startListener(
+            userId = userId,
             onTasksUpdated = { tasks ->
                 tasksLiveData.value = tasks.filter { !it.deleted }
             },
