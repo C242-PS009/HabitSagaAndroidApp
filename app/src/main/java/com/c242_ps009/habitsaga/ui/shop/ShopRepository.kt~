@@ -50,9 +50,9 @@ class ShopRepository {
         }
     }
 
-    suspend fun purchaseItem(userId: String, itemId: String, timestamp: com.google.firebase.Timestamp) {
+    suspend fun purchaseItem(userId: String, itemId: String, TimeStamp: com.google.firebase.Timestamp) {
         val purchasesCollection = firestore.collection("purchases")
-        val purchases = Purchases(userId, itemId, timestamp.toDate())
+        val purchases = Purchases(userId, itemId, TimeStamp.toDate())
         purchasesCollection.add(purchases.toMap()).await()
     }
 

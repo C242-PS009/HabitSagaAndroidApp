@@ -22,8 +22,8 @@ android {
         val properties = Properties().apply {
             rootProject.file("local.properties").reader().use(::load)
         }
-        val base_url  = properties["BASE_URL"] as String?
-        buildConfigField("String", "BASE_URL", "\"${base_url!!}\"")
+        val baseUrl  = properties["BASE_URL"] as String?
+        buildConfigField("String", "BASE_URL", "\"${baseUrl!!}\"")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildFeatures {

@@ -9,18 +9,18 @@
     android:background="@drawable/bg_main"
     tools:context=".ui.shop.ShopActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="28dp"
-        android:background="@android:color/transparent"
-        android:elevation="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="Shop"/>
+<!--    <androidx.appcompat.widget.Toolbar-->
+<!--        android:id="@+id/toolbar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="8dp"-->
+<!--        android:layout_marginTop="28dp"-->
+<!--        android:background="@android:color/transparent"-->
+<!--        android:elevation="4dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:title="Shop"/>-->
 
     <TextView
         android:id="@+id/coins_tv"
@@ -34,8 +34,7 @@
         tools:text="[Currency]"
         app:drawableRightCompat="@drawable/ic_coin"
         app:layout_constraintBottom_toTopOf="@id/container"
-        app:layout_constraintEnd_toEndOf="@id/container"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"/>
+        app:layout_constraintEnd_toEndOf="@id/container"/>
 
     <ImageView
         android:id="@+id/container_3d_support"
@@ -46,7 +45,7 @@
         android:layout_marginBottom="34dp"
         android:layout_marginHorizontal="22dp"
         android:contentDescription="@string/_3d_support"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/btnBuy"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -60,30 +59,44 @@
         android:layout_marginBottom="40dp"
         android:layout_marginHorizontal="25dp"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/btnBuy"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
-        <TextView
-            android:id="@+id/title_tv"
+        <LinearLayout
+            android:id="@+id/title_layout"
             android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:padding="10dp"
-            android:fontFamily="@font/league_spartan_bold"
-            android:textSize="28sp"
-            android:textColor="#C8C8C8"
-            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="10dp"
+            android:gravity="center_vertical"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/rv_layout"
-            android:text="@string/shop"/>
+            app:layout_constraintBottom_toTopOf="@id/rv_layout">
+            <Button
+                android:id="@+id/btnBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:backgroundTint="#C8C8C8"
+                android:background="@drawable/ic_back"/>
+            <TextView
+                android:id="@+id/title_tv"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:padding="10dp"
+                android:fontFamily="@font/league_spartan_bold"
+                android:textSize="28sp"
+                android:textColor="#C8C8C8"
+                android:gravity="center"
+                android:text="@string/shop"/>
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/rv_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@id/title_tv"
+            app:layout_constraintTop_toBottomOf="@id/title_layout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/item_detail">
@@ -199,6 +212,21 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/refresh_icon" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/tvOwned"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="40dp"
+        android:visibility="invisible"
+        android:fontFamily="@font/league_spartan_bold"
+        android:textSize="28sp"
+        android:textColor="#44AA44"
+        android:text="@string/owned"
+        tools:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@id/container"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
     <com.c242_ps009.habitsaga.ui.views.Card3dView
         android:id="@+id/btnBuy"
         android:layout_width="wrap_content"

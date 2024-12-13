@@ -47,7 +47,7 @@ class InventoryActivity : AppCompatActivity() {
 
         binding.apply {
             btnBack.setOnClickListener { finish() }
-
+            
             btnRefresh.setOnClickListener {
                 updateResultState(0)
                 setupMainView("character")

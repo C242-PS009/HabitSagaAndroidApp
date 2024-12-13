@@ -42,7 +42,7 @@
     <string name="enter_task_category">Enter task category</string>
     <string name="due_date">Due Date</string>
     <string name="enter_task_title">Enter task title</string>
-    <string name="owned">OWNED</string>
+    <string name="owned">Owned</string>
     <string name="btnreset">Reset</string>
     <string name="report_progress">Report Progress</string>
     <string name="daily">Daily</string>

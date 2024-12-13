@@ -3,6 +3,7 @@ package com.c242_ps009.habitsaga.ui.shop
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.Toast
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.c242_ps009.habitsaga.R
 import com.c242_ps009.habitsaga.databinding.ActivityShopBinding
 import com.c242_ps009.habitsaga.ui.gamification.UserViewModel
+import com.c242_ps009.habitsaga.ui.inventory.InventoryViewModel
 import com.c242_ps009.habitsaga.utils.Connection
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -43,13 +45,15 @@ class ShopActivity : AppCompatActivity() {
             insets
         }
 
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//        setSupportActionBar(binding.toolbar)
+//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         initAnim()
         setupMainView("character")
 
         binding.apply {
+            btnBack.setOnClickListener { finish() }
+
             btnRefresh.setOnClickListener {
                 updateResultState(0)
                 setupMainView("character")
@@ -127,9 +131,19 @@ class ShopActivity : AppCompatActivity() {
         shopAdapter = PurchasableItemAdapter(
             onClick = { item ->
                 clickedItem = item
+
+                shopViewModel.inventoryItems.observe(this) { inventoryItems ->
+                    if (inventoryItems.any { it.itemId == clickedItem!!.itemId }) {
+                        binding.tvOwned.visibility = View.VISIBLE
+                        binding.btnBuy.visibility = View.INVISIBLE
+                    } else {
+                        binding.tvOwned.visibility = View.INVISIBLE
+                        binding.btnBuy.visibility = View.VISIBLE
+                    }
+                }
+
                 binding.itemTv.text = item.name
                 binding.priceTv.text = String.format(item.price.toString())
-                binding.btnBuy.visibility = View.VISIBLE
                 val fadeInDetail = ObjectAnimator.ofFloat(binding.itemDetail, "alpha", 0f, 1f).setDuration(500)
                 val slideFromRightDetail = ObjectAnimator.ofFloat(binding.itemDetail, "translationX", 100f, 0f).apply {
                     duration = 500
@@ -144,6 +158,21 @@ class ShopActivity : AppCompatActivity() {
         )
         binding.itemsRv.adapter = shopAdapter
     }
+
+//    fun checkIfUserHasItem(userId: String, itemId: String, callback: (Boolean) -> Unit) {
+//        inventoryCollection.document(userId).collection("inventory").document(itemId).get()
+//            .addOnSuccessListener { document ->
+//                if (document.exists()) {
+//                    callback(true)
+//                } else {
+//                    callback(false)
+//                }
+//            }
+//            .addOnFailureListener { exception ->
+//                Log.e(TAG, "Error checking item: ${exception.localizedMessage}", exception)
+//                callback(false)
+//            }
+//    }
 
     private fun setupObservers(filter: String) {
         shopViewModel.shopItems.observe(this) { shopItems ->
@@ -185,8 +214,7 @@ class ShopActivity : AppCompatActivity() {
         }
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
+    companion object {
+        private const val TAG = "ShopActivity"
     }
 }
